@@ -2,12 +2,15 @@
 
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 
+<div class="btn-group">
 {% if latest_question_list %}
     <ul>
+    <img src="../../static/images/img.png" alt="logo">
     {% for question in latest_question_list %}
-    <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
     {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+</div>
