@@ -5,6 +5,8 @@ from django.views import generic
 
 from .models import Choice, Question
 
+pagina = "leeg"
+
 
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
@@ -26,23 +28,42 @@ class ResultsView(generic.DetailView):
 
 
 def vote(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST["choice"])
-    except (KeyError, Choice.DoesNotExist):
+        if question_id == 1:
+            pagina = "polls/detailRegio.html"
+            print("You chose option 1.")
+        elif question_id == 2:
+            pagina = "polls/detailKlanten.html"
+            print("You chose option 2.")
+        elif question_id == 3:
+            pagina = "polls/detailLeveranciers.html"
+            print("You chose option 3.")
+        elif question_id == 4:
+            pagina = "polls/detailProducten.html"
+            print("You chose option 4.")
+        elif question_id == 5:
+            pagina = "polls/detailMedewerkers.html"
+            print("You chose option 5.")
+        else:
+            print("Invalid option.")
+            pagina = "polls/detail.html"
+
+        question = get_object_or_404(Question, pk=question_id)
+        try:
+            selected_choice = question.choice_set.get(pk=request.POST["choice"])
+        except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
-        return render(
-            request,
-            "polls/detail.html",
-            {
-                "question": question,
-                "error_message": "You didn't select a choice.",
-            },
-        )
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+            return render(
+                request,
+                pagina,
+                {
+                    "question": question,
+                    "error_message": "You didn't select a choice.",
+                },
+            )
+        else:
+            selected_choice.votes += 1
+            selected_choice.save()
+            # Always return an HttpResponseRedirect after successfully dealing
+            # with POST data. This prevents data from being posted twice if a
+            # user hits the Back button.
+            return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
