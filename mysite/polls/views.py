@@ -34,15 +34,15 @@ def vote(request, question_id):
         elif question_id == 2:
             pagina = "polls/detailKlanten.html"
             print("You chose option 2.")
-        elif question_id == 3:
+        elif question_id == 5:
             pagina = "polls/detailLeveranciers.html"
+            print("You chose option 5.")
+        elif question_id == 3:
+            pagina = "polls/detailProducten.html"
             print("You chose option 3.")
         elif question_id == 4:
-            pagina = "polls/detailProducten.html"
-            print("You chose option 4.")
-        elif question_id == 5:
             pagina = "polls/detailMedewerkers.html"
-            print("You chose option 5.")
+            print("You chose option 4.")
         else:
             print("Invalid option.")
             pagina = "polls/detail.html"
