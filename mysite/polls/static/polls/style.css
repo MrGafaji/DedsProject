@@ -1,6 +1,8 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 300%;
+    text-align: center;
+    background-color: #000000;
 }
 
 img{
@@ -8,9 +10,22 @@ img{
     height: 15%;
 }
 
+h1{
+  color:rgb(20, 20, 20);
+  size: 50%;
+}
+
+.logo{
+    align-content: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 a:link, a:visited {
-    background-color: #fefefe;
-    color: #0e0e0e;
+    background-color: #0e0e0e;
+    color: white;
     padding: 14px 25px;
     text-align: end;
     text-decoration: none;
@@ -23,5 +38,14 @@ a:link, a:visited {
     background-color: #d1d1d1cf;
   }
 
-
+button{
+    padding: 14px 25px;
+    text-align: end;
+    text-decoration: none;
+    display: inline-flex;
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    cursor: pointer;
+}
 
