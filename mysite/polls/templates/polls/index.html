@@ -9,7 +9,7 @@
     {% for question in latest_question_list %}
     <a href="{% url 'polls:detail' question.id %}" class="">{{ question.question_text }}</a>
     {% endfor %}
-    <h1>Dashboard</h1>
+    <h2>Dashboard</h2>
     </ul>
 {% else %}
     <p>No statistics are available.</p>
