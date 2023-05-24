@@ -1,17 +1,45 @@
-{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AenC</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>AenC</h1>
+        <div class="row">
+            <div class="six columns" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart2"></div>
+            </div>
+            <div class="six columns" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var sales_per_region = {
+            "region": ["Region A", "Region B", "Region C"],
+            "total_product_sales": [100, 200, 150]
+        };
 
-<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+        var amount_per_region = {
+            "region": ["Region A", "Region B", "Region C"],
+            "total_sales_amount": [5000, 7000, 6000]
+        };
 
-<form action="{% url 'polls:vote' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <p>regio</p>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    </fieldset>
-    <input type="submit" value="haal statistieken op">
-    </form>
+        Plotly.newPlot('sales-bar-chart2', [{
+            x: sales_per_region['region'],
+            y: sales_per_region['total_product_sales'],
+            type: 'bar',
+            title: 'Products Sold per Region'
+        }]);
+
+        Plotly.newPlot('sales-bar-chart', [{
+            x: amount_per_region['region'],
+            y: amount_per_region['total_sales_amount'],
+            type: 'bar',
+            title: 'Amount per Region'
+        }]);
+    </script>
+</body>
+</html>
