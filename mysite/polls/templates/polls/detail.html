@@ -1,7 +1,7 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form action="{% url 'polls:statistieken' question.id %}" method="post">
     {% csrf_token %}
     <fieldset>
         <legend><h1>{{ question.question_text }}</h1></legend>
