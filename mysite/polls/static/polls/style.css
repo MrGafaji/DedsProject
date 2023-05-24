@@ -1,17 +1,17 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 300%;
-    text-align: center;
-    background-color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 300%;
+  text-align: center;
+  background-color: #212121;
 }
 
-img{
-    width: 10%;
-    height: 15%;
+img {
+  width: 10%;
+  height: 15%;
 }
 
-h1{
-  color:rgb(255, 255, 255);
+h1 {
+  color: rgb(245, 245, 245);
   size: 50%;
 }
 
@@ -20,37 +20,41 @@ h1{
   size: 50%;
 } */
 
-.logo{
-    align-content: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+.logo {
+  align-content: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
-a:link, a:visited {
-    background-color: #0e0e0e;
-    color: white;
-    padding: 14px 25px;
-    text-align: end;
-    text-decoration: none;
-    display: inline-flex;
-    width: fit-content;
-    height: fit-content;
-  }
+a:link,
+a:visited {
+  background-color: #212121;
+  color: rgb(245, 245, 245);
+  padding: 14px 25px;
+  text-align: end;
+  text-decoration: none;
+  display: inline-flex;
+  width: fit-content;
+  height: fit-content;
+}
+
+a:hover,
+a:active {
+  background-color: #575757cf;
+}
+
+button {
+  padding: 14px 25px;
+  text-align: end;
+  text-decoration: none;
+  display: inline-flex;
+  width: fit-content;
+  height: fit-content;
+  border: none;
+  cursor: pointer;
+  background-color: #212121;
+  font-family: Arial, Helvetica, sans-serif;
   
-  a:hover, a:active {
-    background-color: #d1d1d1cf;
-  }
-
-button{
-    padding: 14px 25px;
-    text-align: end;
-    text-decoration: none;
-    display: inline-flex;
-    width: fit-content;
-    height: fit-content;
-    border: none;
-    cursor: pointer;
 }
-
