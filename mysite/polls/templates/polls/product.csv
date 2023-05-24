@@ -1,0 +1,11 @@
+id,name,description,prod_size,color,quantity,unit_price,picture_name,Category
+300,Tee Shirt,Tank Top,Small,White,18,9,tshirtw.bmp,Clothes
+301,Tee Shirt,V-neck,Medium,Orange,39,14,tshirto.bmp,Clothes
+302,Tee Shirt,Crew Neck,One size fits all,Black,72,14,tshirtb.bmp,Clothes
+400,Baseball Cap,Cotton Cap,One size fits all,Black,92,9,capb.bmp,Accessories
+401,Baseball Cap,Wool cap,One size fits all,White,12,10,capw.bmp,Accessories
+500,Visor,Cloth Visor,One size fits all,White,36,7,visorw.bmp,Accessories
+501,Visor,Plastic Visor,One size fits all,Black,28,7,visorb.bmp,Accessories
+600,Sweatshirt,Hooded Sweatshirt,Large,Green,39,24,sshirtg.bmp,Clothes
+601,Sweatshirt,Zipped Sweatshirt,Large,Blue,32,24,sshirtb.bmp,Clothes
+700,Shorts,Cotton Shorts,Medium,Black,80,15,shortsb.bmp,Clothes
