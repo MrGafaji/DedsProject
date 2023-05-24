@@ -5,11 +5,10 @@
 <div class="btn-group">
 {% if latest_question_list %}
     <ul>
-    <img src="../../static/images/logoImg.png" alt="logo" class="logo">
+    <img src="../../static/images/logoImglight.png" alt="logo" class="logo">
     {% for question in latest_question_list %}
     <a href="{% url 'polls:detail' question.id %}" class="">{{ question.question_text }}</a>
     {% endfor %}
-    <h2>Dashboard</h2>
     </ul>
 {% else %}
     <p>No statistics are available.</p>
