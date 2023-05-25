@@ -27,8 +27,8 @@ jobs:
           python -m venv venv
           source venv/bin/activate
       
-      #- name: Install dependencies
-      #  run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
@@ -60,4 +60,5 @@ jobs:
         with:
           app-name: 'OutdoorFusionDashboard'
           slot-name: 'Production'
+          command: py manage.py runserver ########################
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2E59D6DBBB03422E9F5E70C915A1EB6C }}
