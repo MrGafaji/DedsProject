@@ -18,72 +18,76 @@
             <div class="six columns" style="display: inline-block; width: 49%;">
                 <div id="sales-bar-chart"></div>
             </div>
-        </div>
+        </div>        
     </div>
     <script>
-        var sales_per_region = {
-            "region": ["Region A", "Region B", "Region C"],
-            "total_product_sales": [100, 200, 150]
-        };
-
-        var amount_per_region = {
-            "region": ["Region A", "Region B", "Region C"],
-            "total_sales_amount": [5000, 7000, 6000]
-        };
-
-        Plotly.newPlot('sales-bar-chart2', [{
-            x: sales_per_region['region'],
-            y: sales_per_region['total_product_sales'],
-            type: 'bar',
-            title: 'Products Sold per Region'
-        }], {
-            title: {
-                text: 'Products Sold per Region',
-                font: {
-                    color: '#ffffff' // Set the title color to white
+        fetch('/getSalesPerRegion')
+        .then(response => response.json())
+        .then(data => {
+            var sales_per_region = data.sales_per_region;
+            Plotly.newPlot('sales-bar-chart', [{
+                x: sales_per_region.map(item => item.region),
+                y: sales_per_region.map(item => item.total_product_sales),
+                type: 'bar',
+                title: 'Sales per Region',
+            }], {
+                title: {
+                    text: 'Sales per Region',
+                    font: {
+                        color: '#ffffff' // Set the title color to white
+                    }
+                },
+                plot_bgcolor: '#212121', // Set the plot background color to black
+                paper_bgcolor: '#212121', // Set the paper background color to black
+                yaxis: {
+                    tickfont: {
+                        color: '#ffffff' // Set the font color of the y-axis tick labels to white
+                    }
+                },
+                xaxis: {
+                    tickfont: {
+                        color: '#ffffff' // Set the font color of the x-axis tick labels to white
+                    }
                 }
-            },
-            plot_bgcolor: '#212121', // Set the plot background color to black
-            paper_bgcolor: '#212121', // Set the paper background color to black
-            yaxis: {
-                tickfont: {
-                    color: '#ffffff' // Set the font color of the y-axis tick labels to white
-                }
-            },
-            xaxis: {
-                tickfont: {
-                    color: '#ffffff' // Set the font color of the x-axis tick labels to white
-                }
-            }
+            });
+        })
+        .catch(error => {
+            console.error(error);
         });
-
-        Plotly.newPlot('sales-bar-chart', [{
-            x: amount_per_region['region'],
-            y: amount_per_region['total_sales_amount'],
-            type: 'bar',
-            title: 'Amount per Region',
-        }], {
-            title: {
-                text: 'Amount per Region',
-                font: {
-                    color: '#ffffff' // Set the title color to white
+        
+        fetch('/getSalesAmountPerRegion/')
+        .then(response => response.json())
+        .then(data => {
+            var sales_per_region = data.sales_amount_per_region;
+            Plotly.newPlot('sales-bar-chart2', [{
+                x: sales_per_region.map(item => item.region),
+                y: sales_per_region.map(item => item.total_sales_amount),
+                type: 'bar',
+                title: 'Total Amount made per Region',
+            }], {
+                title: {
+                    text: 'Total Amount made per Region',
+                    font: {
+                        color: '#ffffff' // Set the title color to white
+                    }
+                },
+                plot_bgcolor: '#212121', // Set the plot background color to black
+                paper_bgcolor: '#212121', // Set the paper background color to black
+                yaxis: {
+                    tickfont: {
+                        color: '#ffffff' // Set the font color of the y-axis tick labels to white
+                    }
+                },
+                xaxis: {
+                    tickfont: {
+                        color: '#ffffff' // Set the font color of the x-axis tick labels to white
+                    }
                 }
-            },
-            plot_bgcolor: '#212121', // Set the plot background color to black
-            paper_bgcolor: '#212121', // Set the paper background color to black
-            yaxis: {
-                tickfont: {
-                    color: '#ffffff' // Set the font color of the y-axis tick labels to white
-                }
-            },
-            xaxis: {
-                tickfont: {
-                    color: '#ffffff' // Set the font color of the x-axis tick labels to white
-                }
-            }
+            });
+        })
+        .catch(error => {
+            console.error(error);
         });
-
-    </script>
+        </script>
 </body>
-
 </html>
