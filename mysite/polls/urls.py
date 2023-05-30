@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from polls.DataConversions import AenC as Sales
+from polls.DataConversions import BikeStore as BikeStore
 
 app_name = "polls"
 urlpatterns = [
@@ -15,4 +16,6 @@ urlpatterns = [
     path('getYears/', Sales.get_years, name='getYears'),
     path('getSalesPerRegionPerMonth/<str:region>/<int:year>/', Sales.get_sales_per_region_per_month, name='getSalesPerRegionPerMonth'),
     path('getBestSoldProductInProductCategory/', Sales.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategory'),
+    path('getDepartments/', Sales.get_Departmens, name='getDepartments'),
+    path('getSalaryPerEmployeePerDepartment/<str:department>/', Sales.get_Salary_Per_Employee_Per_Department, name='getSalaryPerEmployeePerDepartment'),
 ]
