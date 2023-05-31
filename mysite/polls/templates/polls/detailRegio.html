@@ -5,85 +5,330 @@
 
 <head>
     <title>Regio data</title>
+    <h1>Regio data</h1>
+    <a href="/" id="Home button">Home</a>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
     <div>
-        <h1>Regio data</h1>
         <div class="row">
-            <div class="six columns" style="display: inline-block; width: 49%;">
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+            <div class="column2" style="display: inline-block; width: 49%;">
                 <div id="sales-bar-chart2"></div>
             </div>
-            <div class="six columns" style="display: inline-block; width: 49%;">
-                <div id="sales-bar-chart"></div>
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <label for="region" style="color: white;">Regio:</label>
+                <select name="region" id="region1" onchange="fetchSalesData()">
+                </select>
+                <label for="year" style="color: white">Jaar:</label>
+                <select name="year" id="year1" onchange="fetchSalesData()">
+                </select>
+            </div>
+            <div class="column1" style="display: inline-block; width: 100%;">
+                <div id="sales-bar-chart3"></div>
+            </div>
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart4"></div>
+            </div>
+            <div class="column1" style="display: inline-block; width: 100%;">
+                <label for="department" style="color: white;">Afdeling:</label>
+                <select name="department" id="department1" onchange="fetchDepartment()"></select>
+            </div>
+            <div class="column1" style="display: inline-block; width: 100%;">
+                <div id="sales-bar-chart5"></div>
             </div>
         </div>
     </div>
     <script>
-        var sales_per_region = {
-            "region": ["Region A", "Region B", "Region C"],
-            "total_product_sales": [100, 200, 150]
-        };
-
-        var amount_per_region = {
-            "region": ["Region A", "Region B", "Region C"],
-            "total_sales_amount": [5000, 7000, 6000]
-        };
-
-        Plotly.newPlot('sales-bar-chart2', [{
-            x: sales_per_region['region'],
-            y: sales_per_region['total_product_sales'],
-            type: 'bar',
-            title: 'Products Sold per Region'
-        }], {
-            title: {
-                text: 'Products Sold per Region',
-                font: {
-                    color: '#ffffff' // Set the title color to white
-                }
-            },
-            plot_bgcolor: '#212121', // Set the plot background color to black
-            paper_bgcolor: '#212121', // Set the paper background color to black
-            yaxis: {
-                tickfont: {
-                    color: '#ffffff' // Set the font color of the y-axis tick labels to white
-                }
-            },
-            xaxis: {
-                tickfont: {
-                    color: '#ffffff' // Set the font color of the x-axis tick labels to white
-                }
-            }
-        });
-
+    
+    fetch('/getSalesPerRegion')
+    .then(response => response.json())
+    .then(data => {
+        var sales_per_region = data.sales_per_region;
         Plotly.newPlot('sales-bar-chart', [{
-            x: amount_per_region['region'],
-            y: amount_per_region['total_sales_amount'],
+            x: sales_per_region.map(item => item.region),
+            y: sales_per_region.map(item => item.total_product_sales),
             type: 'bar',
-            title: 'Amount per Region',
+            marker: {
+                color: '#e377c2'
+            },
+            title: 'Sales per Regio',
         }], {
             title: {
-                text: 'Amount per Region',
+                text: 'Sales per Regio',
                 font: {
-                    color: '#ffffff' // Set the title color to white
+                    color: '#ffffff'
                 }
             },
-            plot_bgcolor: '#212121', // Set the plot background color to black
-            paper_bgcolor: '#212121', // Set the paper background color to black
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
             yaxis: {
+                title: 'Hoeveelheid producten',
+                color: '#ffffff',
                 tickfont: {
-                    color: '#ffffff' // Set the font color of the y-axis tick labels to white
+                    color: '#ffffff'
                 }
             },
             xaxis: {
+                title: 'Regio',
+                color: '#ffffff',
                 tickfont: {
-                    color: '#ffffff' // Set the font color of the x-axis tick labels to white
+                    color: '#ffffff'
+                },
+            }
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    fetch('/getSalesAmountPerRegion/')
+    .then(response => response.json()).then(data => {
+        var sales_per_region = data.sales_amount_per_region;
+        Plotly.newPlot('sales-bar-chart2', [{
+            x: sales_per_region.map(item => item.region),
+            y: sales_per_region.map(item => item.total_sales_amount),
+            type: 'bar',
+            marker: {
+                color: '#e377c2'
+            },
+            title: 'Totale hoeveelheid dollar per Regio',
+        }], {
+            title: {
+                text: 'Totale hoeveelheid dollar per Regio',
+                font: {
+                    color: '#ffffff'
+                }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+                title: 'Hoeveelheid dollar',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                }
+            },
+            xaxis: {
+                title: 'Regio',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
                 }
             }
         });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+        fetch('/getRegions')
+            .then(response => response.json())
+            .then(data => {
+                var regions = data.regions;
+                var select = document.getElementById("region1");
+                for (var i = 0; i < regions.length; i++) {
+                    var opt = regions[i];
+                    var el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    select.appendChild(el);
+                }
+                fetchSalesData();
+            });
+
+        fetch('/getYears')
+            .then(response => response.json())
+            .then(data => {
+                var years = data.years;
+                var select = document.getElementById("year1");
+                for (var i = 0; i < years.length; i++) {
+                    var opt = years[i];
+                    var el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    select.appendChild(el);
+                }
+                fetchSalesData();
+            });
+
+        function fetchSalesData() {
+            var region = document.getElementById("region1").value;
+            var year = document.getElementById("year1").value;
+
+            if (region && year) {
+                fetchSalesPerRegionPerMonth(region, year);
+            }
+        }
+
+        function fetchSalesPerRegionPerMonth(region, year) {
+            fetch(`/getSalesPerRegionPerMonth/${region}/${year}/`)
+    .then(response => response.json())
+    .then(data => {
+        var sales_per_region_per_month = data.sales_per_region_per_month;
+        var xValues = sales_per_region_per_month.map(item => item.order_month);
+        var yValues = sales_per_region_per_month.map(item => item.total_product_sales);
+
+        Plotly.newPlot('sales-bar-chart3', [{
+            x: xValues,
+            y: yValues,
+            type: 'scatter',
+            line: {
+                color: 'red'
+            }
+        }], {
+            title: {
+                text: 'Sales per Regio per Maand',
+                font: {
+                    color: '#ffffff'
+                }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+                title: 'Hoeveelheid producten',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                }
+            },
+            xaxis: {
+                title: 'Hoeveelheid producten',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                },
+                tickmode: 'array', // Set the tick mode to array
+                tickvals: xValues, // Use numerical values as tick locations
+                ticktext: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] // Use month names as tick labels
+            }
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+}
+
+    fetch('/getBestSoldProductInProductCategory')
+    .then(response => response.json())
+    .then(data => {
+        var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
+        Plotly.newPlot('sales-bar-chart4', [{
+            x: best_sold_product_in_product_category.map(item => `${item.Category} - ${item.name}`),
+            y: best_sold_product_in_product_category.map(item => item.total_product_sales),
+            type: 'bar',
+            marker: {
+                color: '#e377c2'
+            },
+            title: 'Best verkochte producten per product categorie',
+        }], {
+            title: {
+                text: 'Best verkochte producten per product categorie',
+                font: {
+                    color: '#ffffff'
+                }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+                title: 'Hoeveelheid verkochte producten',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                }
+            },
+            xaxis: {
+                title: 'Product categorie',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                },
+            }
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    fetch('/getDepartments')
+    .then(response => response.json())
+    .then(data => {
+                var departments = data.departments;
+                var select = document.getElementById("department1");
+                for (var i = 0; i < departments.length; i++) {
+                    var opt = departments[i];
+                    var el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    select.appendChild(el);
+                }
+                fetchDepartment();
+            });
+
+            function fetchDepartment() {
+            var department = document.getElementById("department1").value;
+            if (department && department != 'R & D') {
+                fetchSalarisPerMedewerkerPerDepartment(department);
+            } else if (department && department == 'R & D') {
+                fetchSalarisPerMedewerkerPerDepartment('R%20&%20D');
+            }
+        }
+
+        function fetchSalarisPerMedewerkerPerDepartment(department) {
+    fetch(`/getSalaryPerEmployeePerDepartment/${department}/`)
+        .then(response => response.json())
+        .then(data => {
+            var salaris_per_medewerker_per_department = data.salary_per_employee_per_department;
+            
+            if (salaris_per_medewerker_per_department && salaris_per_medewerker_per_department.length > 0) {
+                var xValues = salaris_per_medewerker_per_department.map(item => `${item.emp_fname}  ${item.emp_lname}`);
+                var yValues = salaris_per_medewerker_per_department.map(item => item.salary);
+
+                Plotly.newPlot('sales-bar-chart5', [{
+                    x: xValues,
+                    y: yValues,
+                    type: 'bar',
+                    marker: {
+                        color: '#e377c2'
+                    },
+                }], {
+                    title: {
+                        text: 'Salaris per medewerker per departement',
+                        font: {
+                            color: '#ffffff'
+                        }
+                    },
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    yaxis: {
+                        title: 'Salaris',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    xaxis: {
+                        title: 'Medewerker',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        },
+                    }
+                });
+            } else {
+                // Handle case when salaris_per_medewerker_per_department is undefined or empty
+                console.log('No data available for the selected department.');
+            }
+        })
+        .catch(error => {
+            // Handle error
+            console.error('Error fetching salaris per medewerker per department:', error);
+        });
+}
 
     </script>
 </body>
-
 </html>
