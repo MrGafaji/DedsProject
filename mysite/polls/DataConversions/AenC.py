@@ -1,14 +1,34 @@
 import pandas as pd
 import pyodbc
+import os
 from django.http import JsonResponse
+from supabase import create_client, Client
+from pandas import json_normalize
+import json
 
-aenc = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\smkle\Downloads\aenc.accdb;')
+url: str = 'https://cglhcfmkwabxrvlfuqwb.supabase.co/'
+key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnbGhjZm1rd2FieHJ2bGZ1cXdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQxNDk2MzUsImV4cCI6MTk5OTcyNTYzNX0.h-qRysp76hKecbDCjdLaZP03wOaAQ_sl-6_vQ1odb7M"
+supabase: Client = create_client(url, key)
+data = supabase.auth.sign_in_with_password({"email": "outdoorfusion@gmail.com", "password": "Admin123"})
 
-sales_order_item = pd.read_sql_query("SELECT * FROM sales_order_item", aenc)
-sales_order = pd.read_sql_query("SELECT * FROM sales_order", aenc)
-product = pd.read_sql_query("SELECT * FROM product", aenc)
-employee = pd.read_sql_query("SELECT * FROM employee", aenc)
-department = pd.read_sql_query("SELECT * FROM department", aenc)
+
+sales_order_itemSUP = supabase.table('salesOrderItem').select('*').execute().json()
+sales_orderSUP = supabase.table('SalesOrders').select('*').execute().json()
+productSUP = supabase.table('product2').select('*').execute().json()
+employeeSUP = supabase.table('Employee').select('*').execute().json()
+departmentSUP = supabase.table('Department').select('*').execute().json()
+
+
+def toDf(tabel):
+    d = json.loads(tabel)
+    df = json_normalize(d, 'data')
+    return df
+
+sales_order_item = toDf(sales_order_itemSUP)
+sales_order = toDf(sales_orderSUP)
+product = toDf(productSUP)
+employee = toDf(employeeSUP)
+department = toDf(departmentSUP)
 
 merged_data = pd.merge(sales_order_item, product, left_on='prod_id', right_on='id')
 merged_data = pd.merge(merged_data, sales_order, left_on='id_x', right_on='id')
