@@ -1,5 +1,45 @@
 import pandas as pd
-import pyodbc
 from django.http import JsonResponse
+import urllib.parse
 
+BikeStore = pd.read_csv(r'C:\Users\smkle\OneDrive - De Haagse Hogeschool\Documenten\GitHub\DedsProject\mysite\polls\DataConversions\Sales.csv')
+BikeStore['Date'] = pd.to_datetime(BikeStore['Date'])
+
+def get_age_groups(request):
+    age_groups = BikeStore['Age_Group'].unique()
+    age_groups = age_groups.tolist()
+
+    result = {
+        'age_groups': age_groups
+    }
+
+    return JsonResponse(result, safe=False)
+
+def get_product_per_customergroup(request, age_group):
+    decoded_age_group = urllib.parse.unquote(age_group)
+
+    product_per_customergroup = BikeStore[BikeStore['Age_Group'] == decoded_age_group].groupby('Product')['Order_Quantity'].sum().reset_index()
+    product_per_customergroup = product_per_customergroup.sort_values(by='Order_Quantity', ascending=False)
+    product_per_customergroup = product_per_customergroup.head(3)
+
+    result = {
+        'product_per_customergroup': product_per_customergroup.to_dict('records')
+    }
+
+    return JsonResponse(result, safe=False)
+
+def get_most_profit_per_customergroup(request):
+    most_profit_per_customergroup = BikeStore.groupby('Age_Group')['Profit'].sum().reset_index()
+
+    result = {
+        'most_profit_per_customergroup': most_profit_per_customergroup.to_dict('records')
+    }
+
+    return JsonResponse(result, safe=False)
+
+
+
+# if __name__ == "__main__":
+#     sales_data = get_product_per_customergroup()
+#     print(sales_data)
 
