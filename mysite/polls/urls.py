@@ -22,4 +22,5 @@ urlpatterns = [
     path('getAgeGroups/', Bike.get_age_groups, name='getAgeGroups'),
     path('getproductpercustomergroup/<str:age_group>/', Bike.get_product_per_customergroup, name='get_product_per_customergroup'),
     path('getmostprofitpercustomergroup/', Bike.get_most_profit_per_customergroup, name='get_most_profit_per_customergroup'),
+    path('getBestSoldProductInProductCategoryBike/', Bike.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryBike')
 ]

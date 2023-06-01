@@ -77,7 +77,6 @@ def get_best_sold_product_in_product_category(request):
     best_sold_product_in_product_category = best_sold_product_in_product_category.sort_values(by=['Category', 'total_product_sales'], ascending=False)
     best_sold_product_in_product_category = best_sold_product_in_product_category.groupby('Category').head(1)
 
-
     result = {
         'best_sold_product_in_product_category': best_sold_product_in_product_category.to_dict('records')
     }
