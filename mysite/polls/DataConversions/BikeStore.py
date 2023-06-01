@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import urllib.parse
 from .DBConnectie import DBConn
 
-BikeStore = DBConn.toDf(DBConn.sales)
+BikeStore = DBConn.toDf(DBConn.salesSUP)
 
 BikeStore['Date'] = pd.to_datetime(BikeStore['Date'], format='%d-%m-%Y %H:%M:%S')
 
