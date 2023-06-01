@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from polls.DataConversions import AenC as Sales
 from polls.DataConversions import BikeStore as Bike
+from polls.DataConversions import AdventureWorks as AdventureWorks
 
 app_name = "polls"
 urlpatterns = [
@@ -22,5 +23,7 @@ urlpatterns = [
     path('getAgeGroups/', Bike.get_age_groups, name='getAgeGroups'),
     path('getproductpercustomergroup/<str:age_group>/', Bike.get_product_per_customergroup, name='get_product_per_customergroup'),
     path('getmostprofitpercustomergroup/', Bike.get_most_profit_per_customergroup, name='get_most_profit_per_customergroup'),
-    path('getBestSoldProductInProductCategoryBike/', Bike.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryBike')
+    path('getBestSoldProductInProductCategoryBike/', Bike.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryBike'),
+
+    path('getAmountSoldProductsPerSupplier/', AdventureWorks.get_amount_sold_products_per_supplier, name='getAmountSoldProductsPerSupplier')
 ]
