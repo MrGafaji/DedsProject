@@ -1,17 +1,37 @@
+<!DOCTYPE html>
+<html>
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 
-<form action="{% url 'polls:statistieken' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <p>Medewerkers</p>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    </fieldset>
-    <input type="submit" value="haal statistieken op">
-    </form>
+<head>
+    <title>Medewerker data</title>
+    <h1>Medewerker data</h1>
+    <a href="/" id="Home button">Home</a>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+
+<body>
+    <div>
+        <div id="output"></div>
+        <div class="row">
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        fetch('/predict_bonus')
+            .then(response => response.json())
+            .then(data => {
+                var output = document.getElementById("output");
+                output.innerHTML = data;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    </script>
+</body>
+
+</html>
