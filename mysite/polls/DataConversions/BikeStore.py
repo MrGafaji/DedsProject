@@ -5,7 +5,7 @@ from .DBConnectie import DBConn
 
 BikeStore = DBConn.toDf(DBConn.sales)
 
-BikeStore['Date'] = pd.to_datetime(BikeStore['Date'])
+BikeStore['Date'] = pd.to_datetime(BikeStore['Date'], format='%d-%m-%Y %H:%M:%S')
 
 
 def get_age_groups(request):
