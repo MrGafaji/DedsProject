@@ -11,7 +11,7 @@ department = DBConn.toDf(DBConn.departmentSUP)
 merged_data = pd.merge(sales_order_item, product, left_on='prod_id', right_on='id')
 merged_data = pd.merge(merged_data, sales_order, left_on='id_x', right_on='id')
 merged_data['unit_price'] = merged_data['unit_price'].astype(float)
-merged_data['order_date'] = pd.to_datetime(merged_data['order_date'])
+merged_data['order_date'] = pd.to_datetime(merged_data['order_date'], format='%d-%b-%Y %I:%M:%S %p')
 
 merged_data2 = pd.merge(employee, department, left_on='dept_id', right_on='dept_id')
 merged_data2['salary'] = merged_data2['salary'].astype(float)
@@ -74,7 +74,6 @@ def get_best_sold_product_in_product_category(request):
     best_sold_product_in_product_category.rename(columns={'id': 'total_product_sales'}, inplace=True)
     best_sold_product_in_product_category = best_sold_product_in_product_category.sort_values(by=['Category', 'total_product_sales'], ascending=False)
     best_sold_product_in_product_category = best_sold_product_in_product_category.groupby('Category').head(1)
-
 
     result = {
         'best_sold_product_in_product_category': best_sold_product_in_product_category.to_dict('records')

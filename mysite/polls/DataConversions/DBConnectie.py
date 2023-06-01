@@ -21,12 +21,12 @@ class DBConn:
     departmentSUP = supabase.table('Department').select('*').execute().json()
     bonusSUP = supabase.table('Bonus').select('*').execute().json()
     product1SUP = supabase.table('Product1').select('*').execute().json()
-    productVendor = supabase.table('ProductVendor').select('*').execute().json()
-    productionProduct = supabase.table('ProductionProduct').select('*').execute().json()
-    sales = supabase.table('Sales').select('*').execute().json()
-    salesOrderDetail = supabase.table('SalesOrderDetail').select('*').execute().json()
-    salesOrderHeader = supabase.table('SalesOrderHeader').select('*').execute().json()
-    vendor = supabase.table('Vendor').select('*').execute().json()
+    productVendorSUP = supabase.table('ProductVendor').select('*').execute().json()
+    productionProductSUP = supabase.table('ProductionProduct').select('*').execute().json()
+    salesSUP = supabase.table('Sales').select('*').execute().json()
+    salesOrderDetailSUP = supabase.table('SalesOrderDetail').select('*').execute().json()
+    salesOrderHeaderSUP = supabase.table('SalesOrderHeader').select('*').execute().json()
+    vendorSUP = supabase.table('Vendor').select('*').execute().json()
 
     def toDf(tabel):
         d = json.loads(tabel)
