@@ -1,17 +1,76 @@
+<!DOCTYPE html>
+<html>
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 
-<form action="{% url 'polls:statistieken' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <p>Producten</p>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    </fieldset>
-    <input type="submit" value="haal statistieken op">
-    </form>
+<head>
+    <title>Product data</title>
+    <h1>Product data</h1>
+    <a href="/" id="Home button">Home</a>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+
+<body>
+    <div>
+        <div class="row">
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        updateCharts();
+
+        setInterval(updateCharts, 300000);
+
+        function updateCharts() {
+            fetch('/getProductSales')
+                .then(response => response.json())
+                .then(data => {
+                    var sales_per_region = data.sales_per_region;
+                    Plotly.react('sales-bar-chart', [{
+                        x: sales_per_region.map(item => item.region),
+                        y: sales_per_region.map(item => item.total_product_sales),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'Sales per Regio',
+                    }], {
+                        title: {
+                            text: 'Sales per Regio',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Regio',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
