@@ -5,6 +5,7 @@ installeer django: pip install django
 Start app:		 py manage.py runserver
 Verander port: 	 py manage.py runserver {port of ip}
 app template: 	 py manage.py startapp {naam app}
+open cypress:    npx cypress open (in testing)
 
 
 Files:

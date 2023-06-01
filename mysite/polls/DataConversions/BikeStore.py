@@ -1,9 +1,12 @@
 import pandas as pd
 from django.http import JsonResponse
 import urllib.parse
+from .DBConnectie import DBConn
 
-BikeStore = pd.read_csv(r'C:\Users\smkle\OneDrive - De Haagse Hogeschool\Documenten\GitHub\DedsProject\mysite\polls\DataConversions\Sales.csv')
-BikeStore['Date'] = pd.to_datetime(BikeStore['Date'])
+BikeStore = DBConn.toDf(DBConn.sales)
+
+BikeStore['Date'] = pd.to_datetime(BikeStore['Date'], format='%d-%m-%Y %H:%M:%S')
+
 
 def get_age_groups(request):
     age_groups = BikeStore['Age_Group'].unique()
