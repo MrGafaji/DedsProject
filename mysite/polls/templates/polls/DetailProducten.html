@@ -18,6 +18,9 @@
                 <div id="sales-bar-chart"></div>
             </div>
         </div>
+        <h1>machine learing</h1>
+        <h1>Random Forest accuracy:</h1>
+        <h1 id="output"></h1>
     </div>
     <script>
         updateCharts();
@@ -61,6 +64,17 @@
                             },
                         }
                     });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+
+            fetch('/predict_bonus')
+                .then(response => response.json())
+                .then(data => {
+                    var output = document.getElementById("output");
+                    output.innerHTML = data;
                 })
                 .catch(error => {
                     console.error(error);

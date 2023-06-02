@@ -13,7 +13,6 @@
 
 <body>
     <div>
-        <div id="output"></div>
         <div class="row">
             <div class="column1" style="display: inline-block; width: 49%;">
                 <div id="sales-bar-chart"></div>
@@ -21,15 +20,6 @@
         </div>
     </div>
     <script>
-        fetch('/predict_bonus')
-            .then(response => response.json())
-            .then(data => {
-                var output = document.getElementById("output");
-                output.innerHTML = data;
-            })
-            .catch(error => {
-                console.error(error);
-            });
 
     </script>
 </body>
