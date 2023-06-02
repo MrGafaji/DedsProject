@@ -7,7 +7,7 @@ from .DBConnectie import DBConn
 from django.http import JsonResponse
 
 def predict_bonus(request):
-    df = DBConn.toDf(DBConn.sales)
+    df = DBConn.toDf(DBConn.salesSUP)
     data = df
 
     features = ['Customer_Age', 'Age_Group', 'Customer_Gender', 'Country', 'State', 'Product_Category', 'Sub_Category', 'Product', 'Order_Quantity', 'Unit_Cost', 'Unit_Price']

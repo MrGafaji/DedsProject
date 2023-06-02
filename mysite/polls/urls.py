@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
+from polls.DataConversions import AenC as Sales
 from polls.DataConversions import AdventureWorks as AdventureWorks
 from polls.DataConversions import BikeStore as BikeStore
+from polls.DataConversions import BikeStore as Bike
 from polls.DataConversions import RandomForest as RandomForest
 
 app_name = "polls"
