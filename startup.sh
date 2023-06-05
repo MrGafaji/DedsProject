@@ -1,1 +1,1 @@
-gunicorn --bind=0.0.0.0 --timeout 600 mysite.wsgi
+gunicorn --bind=0.0.0.0 --timeout 600 --chdir mysite mysite.wsgi
