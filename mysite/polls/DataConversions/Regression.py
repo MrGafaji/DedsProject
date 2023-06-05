@@ -38,7 +38,7 @@ def perform_regression(request):
     regression_model = LinearRegression()
     regression_model.fit(X_train, y_train)
 
- # Voorspellingen maken op de testset
+    # Voorspellingen maken op de testset
     y_pred = regression_model.predict(X_test)
 
     # Prestaties van het model evalueren
@@ -55,6 +55,9 @@ def perform_regression(request):
                       yaxis_title='Total Sales Amount')
 
     fig.show()
+
+    print('Mean Squared Error:', mse)
+    print('R2 Score:', r2)
 
     # Create a dictionary with the regression results
     results = {
