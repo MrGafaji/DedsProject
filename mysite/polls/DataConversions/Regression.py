@@ -50,11 +50,39 @@ def perform_regression(request):
     fig.add_trace(go.Scatter(x=X_test.flatten(), y=y_test, mode='markers', name='Data Points'))
     fig.add_trace(go.Scatter(x=X_test.flatten(), y=y_pred, mode='lines', name='Regression Line'))
 
-    fig.update_layout(title='Regression Analysis',
-                      xaxis_title='Salary',
-                      yaxis_title='Total Sales Amount')
+    # fig.update_layout(title='Regression Analysis',
+    #                   xaxis_title='Salary',
+    #                   yaxis_title='Total Sales Amount')
 
-    fig.show()
+    # fig.show()
+
+    # print('Mean Squared Error:', mse)
+    # print('R2 Score:', r2)
+
+    # Create a dictionary with the regression results
+    results = {
+        'mse': mse,
+        'r2': r2
+    }
+    # Convert X_test and y_pred to lists
+    x_test_list = X_test.flatten().tolist()
+    y_pred_list = y_pred.tolist()
+
+    # Create the graph data
+    graphData = {
+        'x': x_test_list,
+        'y': y_test.tolist(),
+        'mode': 'markers',
+        'name': 'Data Points'
+    }
+
+    # Create the regression line data
+    regressionLine = {
+        'x': x_test_list,
+        'y': y_pred_list,
+        'mode': 'lines',
+        'name': 'Regression Line'
+    }
 
     print('Mean Squared Error:', mse)
     print('R2 Score:', r2)
@@ -62,7 +90,9 @@ def perform_regression(request):
     # Create a dictionary with the regression results
     results = {
         'mse': mse,
-        'r2': r2
+        'r2': r2,
+        'graphData': graphData,
+        'regressionLine': regressionLine
     }
 
     # Return the results as JSON response

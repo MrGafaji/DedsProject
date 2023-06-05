@@ -37,9 +37,20 @@
 
                 var mseElement = document.getElementById("mse");
                 var r2Element = document.getElementById("r2");
+                // var graphElement = document.getElementById("plot");
 
                 mseElement.innerHTML += mse;
                 r2Element.innerHTML += r2;
+
+                var graphData = [data.graphData, data.regressionLine];
+                var layout = {
+                    title: 'Regression Analysis',
+                    xaxis: { title: 'Salary' },
+                    yaxis: { title: 'Total Sales Amount' }
+                };
+                var config = { responsive: true };
+
+                Plotly.newPlot('plot', graphData, layout, config);
             })
             .catch(error => {
                 console.error(error);
