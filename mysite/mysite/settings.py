@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t3##wbfjl1g%kix4mzcm2j(yswjy#n7zjdmg7&gilms!1fcc$=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*, outdoorfusiondashboard.azurewebsites.net']
+ALLOWED_HOSTS = ['*', 'outdoorfusiondashboard.azurewebsites.net' ]
 
 
 # Application definition
