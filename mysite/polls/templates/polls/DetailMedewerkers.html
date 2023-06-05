@@ -13,6 +13,14 @@
 
 <body>
     <div>
+        <div class="row">
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div>
         <div id="results">
             <h2>Regression Results</h2>
             <p id="mse">Mean Squared Error: </p>
@@ -20,7 +28,7 @@
         </div>
     </div>
     <script>
-         fetch('/perform_regression/')
+        fetch('/perform_regression')
             .then(response => response.json())
             .then(data => {
                 var mse = data[0];
