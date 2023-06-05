@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from polls.DataConversions import AenC as Sales
 from polls.DataConversions import BikeStore as BikeStore
+from polls.DataConversions import Regression as Regression
+
 
 app_name = "polls"
 urlpatterns = [
@@ -18,4 +20,6 @@ urlpatterns = [
     path('getBestSoldProductInProductCategory/', Sales.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategory'),
     path('getDepartments/', Sales.get_Departmens, name='getDepartments'),
     path('getSalaryPerEmployeePerDepartment/<str:department>/', Sales.get_Salary_Per_Employee_Per_Department, name='getSalaryPerEmployeePerDepartment'),
+    path('perform_regression/', Regression.perform_regression, name='perform_regression'),
+
 ]

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 {% load static %}
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
@@ -10,17 +10,9 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
-
 <body>
-    <div>
-        <div id="results">
-            <h2>Regression Results</h2>
-            <p id="mse">Mean Squared Error: </p>
-            <p id="r2">R-squared Score: </p>
-        </div>
-    </div>
     <script>
-         fetch('/perform_regression/')
+        fetch('/perform_regression/')
             .then(response => response.json())
             .then(data => {
                 var mse = data[0];
@@ -36,6 +28,12 @@
                 console.error(error);
             });
     </script>
+
+    <div id="results">
+        <h2>Regression Results</h2>
+        <p id="mse">Mean Squared Error: </p>
+        <p id="r2">R-squared Score: </p>
+    </div>
 </body>
 
-</html>
+</html> -->
