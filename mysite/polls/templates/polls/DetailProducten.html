@@ -15,12 +15,12 @@
     <div>
         <div class="row">
             <div class="column1" style="display: inline-block; width: 49%;">
-                <div id="sales-bar-chart"></div>
             </div>
         </div>
         <h1>machine learing</h1>
-        <h1>Random Forest accuracy:</h1>
-        <h1 id="output"></h1>
+        <h1>Random Forest:</h1>
+        <div id="sales-bar-chart"></div>
+        <h1 id="accuracy"></h1>
     </div>
     <script>
         updateCharts();
@@ -70,20 +70,66 @@
                 });
 
 
-            fetch('/predict_bonus')
+            fetch('/predict_bonus', {
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
+                    var accuracy = document.getElementById("accuracy");
                     var output = document.getElementById("output");
-                    output.innerHTML = data;
+                    accuracy.innerHTML = "Accuracy: " + data.accuracy;
+
+                    var ageGroups = data.Age_Group.map(function (ageGroup) {
+                        if (ageGroup === 0) {
+                            return "<25";
+                        } else if (ageGroup === 1) {
+                            return "25-34";
+                        } else if (ageGroup === 2) {
+                            return "35-64";
+                        } else if (ageGroup === 3) {
+                            return "64+";
+                        } else {
+                            return "Unknown";
+                        }
+                    });
+
+                    var predictedProfits = data.Average_Profit;
+
+                    console.log(data.accuracy);
+                    console.log(ageGroups);
+                    console.log(predictedProfits);
+
+                    var plotData = [{
+                        x: ageGroups,
+                        y: predictedProfits,
+                        type: 'bar',
+                        marker: {
+                            color: 'blue'
+                        }
+                    }];
+
+                    var layout = {
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        font: {
+                            color: 'white'
+                        },
+                        xaxis: {
+                            title: 'Age Group'
+                        },
+                        yaxis: {
+                            title: 'Average Profit'
+                        }
+                    };
+
+                    output = Plotly.newPlot('sales-bar-chart', plotData, layout);
                 })
                 .catch(error => {
                     console.error(error);
                 });
         }
-
-
-
-
     </script>
 </body>
 
