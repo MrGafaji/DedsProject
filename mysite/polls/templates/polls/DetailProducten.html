@@ -21,6 +21,8 @@
         <h1>Random Forest:</h1>
         <div id="sales-bar-chart"></div>
         <h1 id="accuracy"></h1>
+        <h1>K-Means Clustering:</h1>
+        <div id="clustering-chart"></div>
     </div>
     <script>
         updateCharts();
@@ -127,8 +129,76 @@
                     output = Plotly.newPlot('sales-bar-chart', plotData, layout);
                 })
                 .catch(error => {
+                    console.error(error); a
+                });
+
+
+            fetch('/cluster')
+                .then(response => response.json())
+                .then(data => {
+                    var labels = data.labels;
+                    var centers = data.centers;
+                    fetch('/cluster')
+                        .then(response => response.json())
+                        .then(data => {
+                            var labels = data.labels;
+                            var centers = data.centers;
+                            var dataPoints = data.dataPoints;
+
+                            var xData = dataPoints.map(item => item.Order_Quantity);
+                            var yData = dataPoints.map(item => item.Profit);
+
+                            var trace = {
+                                x: xData,
+                                y: yData,
+                                mode: 'markers',
+                                marker: {
+                                    color: labels,
+                                    size: 10,
+                                    colorscale: 'Viridis',
+                                    line: {
+                                        color: 'black',
+                                        width: 0.5
+                                    }
+                                },
+                                type: 'scatter'
+                            };
+
+                            var layout = {
+                                title: {
+                                    text: 'K-Means Clustering',
+                                    font: {
+                                        color: '#ffffff'
+                                    }
+                                },
+                                plot_bgcolor: '#212121',
+                                paper_bgcolor: '#212121',
+                                xaxis: {
+                                    title: 'Order Quantity',
+                                    color: '#ffffff',
+                                    tickfont: {
+                                        color: '#ffffff'
+                                    }
+                                },
+                                yaxis: {
+                                    title: 'Profit',
+                                    color: '#ffffff',
+                                    tickfont: {
+                                        color: '#ffffff'
+                                    }
+                                }
+                            };
+
+                            Plotly.newPlot('clustering-chart', [trace], layout);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                })
+                .catch(error => {
                     console.error(error);
                 });
+
         }
     </script>
 </body>
