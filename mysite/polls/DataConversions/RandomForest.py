@@ -32,4 +32,5 @@ def predict_bonus(request):
     avg_profit_per_age_group = results_df.groupby('Age_Group')['Profit'].mean()
 
     chart_data = {'Age_Group': avg_profit_per_age_group.index.tolist(), 'Average_Profit': avg_profit_per_age_group.tolist(), 'accuracy': metrics.accuracy_score(y_test, y_pred)}
+    DBConn.supabase.auth.sign_out()
     return JsonResponse(chart_data)

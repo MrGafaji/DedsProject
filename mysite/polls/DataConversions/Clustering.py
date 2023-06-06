@@ -33,5 +33,5 @@ def predict_bonus(request):
         'labels': labels,
         'centers': centers.tolist()
     }
-
+    DBConn.supabase.auth.sign_out()
     return JsonResponse(result, safe=False)
