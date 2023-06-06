@@ -1,15 +1,11 @@
 import pandas as pd
 import pyodbc
 import numpy as np
-
-import warnings
-with warnings.catch_warnings(record=True):
-    warnings.simplefilter("always")
-conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Maike\Desktop\CompleetSterSchema.accdb;')
+from DBConnectie import DBConn
 
 ### BikeStore
 def GetSalesTable():
-    Sales = pd.read_sql("select * from dbo_Sales", conn)
+    Sales = DBConn.toDf(DBConn.salesSUP)
     print(Sales.columns)
     Product = Sales[['Product', 'Product_Category', 'Sub_Category']]
     Customer = Sales[[]]
