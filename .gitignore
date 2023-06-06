@@ -4,3 +4,4 @@ mysite/polls/__pycache__/
 .vscode/
 deds/
 mysite/polls/DataConversions/SupabaseTest.py
+mysite/polls/DataConversions/__pycache__/
