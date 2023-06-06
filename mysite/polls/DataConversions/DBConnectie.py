@@ -13,7 +13,6 @@ class DBConn:
     supabase: Client = create_client(url, key)
     data = supabase.auth.sign_in_with_password({"email": "outdoorfusion@gmail.com", "password": "Admin123"})
 
-
     sales_order_itemSUP = supabase.table('salesOrderItem').select('*').execute().json()
     sales_orderSUP = supabase.table('SalesOrders').select('*').execute().json()
     productSUP = supabase.table('product2').select('*').execute().json()
@@ -27,7 +26,6 @@ class DBConn:
     salesOrderDetailSUP = supabase.table('SalesOrderDetail').select('*').execute().json()
     salesOrderHeaderSUP = supabase.table('SalesOrderHeader').select('*').execute().json()
     vendorSUP = supabase.table('Vendor').select('*').execute().json()
-
     def toDf(tabel):
         d = json.loads(tabel)
         df = json_normalize(d, 'data')

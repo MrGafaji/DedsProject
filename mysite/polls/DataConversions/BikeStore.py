@@ -43,7 +43,7 @@ def get_most_profit_per_customergroup(request):
 def get_best_sold_product_in_product_category(request):
     best_sold_product_in_product_category = BikeStore.groupby(['Product_Category', 'Product'])['Order_Quantity'].sum().reset_index()
     best_sold_product_in_product_category = best_sold_product_in_product_category.sort_values(by=['Product_Category', 'Order_Quantity'], ascending=False)
-    best_sold_product_in_product_category = best_sold_product_in_product_category.groupby('Product_Category').head(1)
+    best_sold_product_in_product_category = best_sold_product_in_product_category.groupby('Product_Category').head(3)
 
 
     result = {

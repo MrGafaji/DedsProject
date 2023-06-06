@@ -146,7 +146,7 @@ fetch('/getBestSoldProductInProductCategoryBike')
     .then(data => {
         var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
         Plotly.newPlot('sales-bar-chart3', [{
-            x: best_sold_product_in_product_category.map(item => `${item.Product_Category} - ${item.Product}`),
+            x: best_sold_product_in_product_category.map(item => `${item.Sub_Category} - ${item.Product}`),
             y: best_sold_product_in_product_category.map(item => item.Order_Quantity),
             type: 'bar',
             marker: {
