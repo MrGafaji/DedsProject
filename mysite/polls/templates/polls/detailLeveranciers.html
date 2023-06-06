@@ -28,49 +28,89 @@
       updateCharts();
       
       setInterval(updateCharts, 300000);
-
+      
       function updateCharts() {
-        fetch('/getAmountSoldProductsPerSupplier')
+        fetch('/getQtySoldProductsPerSupplier')
         .then(response => response.json())
         .then(data => {
-          var amount_sold_products_per_suplier = data.amount_sold_products_per_supplier;
+          var qty_sold_products_per_suplier = data.qty_sold_products_per_supplier;
           Plotly.react('sales-bar-chart', [{
-            x: amount_sold_products_per_suplier.map(item => item.Name),
-            y: amount_sold_products_per_suplier.map(item => item.total_sales_quantity),
+            x: qty_sold_products_per_suplier.map(item => item.Name),
+            y: qty_sold_products_per_suplier.map(item => item.total_sales_quantity),
             type: 'bar',
-          marker: {
-                color: '#e377c2'
-        },
-          title: 'Totale hoeveelheid verkochte producten per leverancier',
-        }], {
-          title: {
+            marker: {
+              color: '#e377c2'
+            },
+            title: 'Totale hoeveelheid verkochte producten per leverancier',
+          }], {
+            title: {
               text: 'Totale hoeveelheid verkochte producten per leverancier',
-            font: {
-                  color: '#ffffff'
-          }
-      },
-      plot_bgcolor: '#212121',
-      paper_bgcolor: '#212121',
-      yaxis: {
-            title: 'Hoeveelheid verkochte producten',
-          color: '#ffffff',
-          tickfont: {
+              font: {
                 color: '#ffffff'
-        }
-    },
-    xaxis: {
-          title: 'Regio',
-        color: '#ffffff',
-        tickfont: {
-              color: '#ffffff'
+              }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+              title: 'Hoeveelheid verkochte producten',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            },
+            xaxis: {
+              title: 'Leverancier',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        
+        fetch('/getAmountMoneyPerSupplier')
+        .then(response => response.json())
+        .then(data => {
+          var amount_money_per_supplier = data.amount_money_per_supplier;
+          Plotly.react('sales-bar-chart2', [{
+            x: amount_money_per_supplier.map(item => item.Name),
+            y: amount_money_per_supplier.map(item => item.total_amount_money),
+            type: 'bar',
+            marker: {
+              color: '#e377c2'
+            },
+            title: 'Totaal betaald per leverancier',
+          }], {
+            title: {
+              text: 'Totaal betaald per leverancier',
+              font: {
+                color: '#ffffff'
+              }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+              title: 'Betaald bedrag',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            },
+            xaxis: {
+              title: 'Leverancier',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            }
+          });
+        })
+
+        
       }
-  }
-});
-})
-.catch(err => {
-  console.log(err);
-});
-}
 
     </script>
 </body>

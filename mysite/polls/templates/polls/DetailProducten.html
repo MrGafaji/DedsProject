@@ -21,6 +21,9 @@
         <h1>Random Forest:</h1>
         <div id="sales-bar-chart"></div>
         <h1 id="accuracy"></h1>
+        <div id="sales-bar-chart2"></div>
+        <div id="sales-bar-chart3"></div>
+
     </div>
     <script>
         updateCharts();
@@ -28,47 +31,6 @@
         setInterval(updateCharts, 300000);
 
         function updateCharts() {
-            fetch('/getProductSales')
-                .then(response => response.json())
-                .then(data => {
-                    var sales_per_region = data.sales_per_region;
-                    Plotly.react('sales-bar-chart', [{
-                        x: sales_per_region.map(item => item.region),
-                        y: sales_per_region.map(item => item.total_product_sales),
-                        type: 'bar',
-                        marker: {
-                            color: '#e377c2'
-                        },
-                        title: 'Sales per Regio',
-                    }], {
-                        title: {
-                            text: 'Sales per Regio',
-                            font: {
-                                color: '#ffffff'
-                            }
-                        },
-                        plot_bgcolor: '#212121',
-                        paper_bgcolor: '#212121',
-                        yaxis: {
-                            title: 'Hoeveelheid producten',
-                            color: '#ffffff',
-                            tickfont: {
-                                color: '#ffffff'
-                            }
-                        },
-                        xaxis: {
-                            title: 'Regio',
-                            color: '#ffffff',
-                            tickfont: {
-                                color: '#ffffff'
-                            },
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-
 
             fetch('/predict_bonus', {
                 headers: {
@@ -129,7 +91,89 @@
                 .catch(error => {
                     console.error(error);
                 });
-        }
+
+                fetch('/getBestSoldProductInProductCategory')
+                .then(response => response.json())
+                .then(data => {
+                    var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
+                    Plotly.newPlot('sales-bar-chart2', [{
+                        x: best_sold_product_in_product_category.map(item => `${item.Category} - ${item.name}`),
+                        y: best_sold_product_in_product_category.map(item => item.total_product_sales),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'AenC best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'AenC best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+                fetch('/getBestSoldProductInProductCategoryBike')
+    .then(response => response.json())
+    .then(data => {
+        var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
+        Plotly.newPlot('sales-bar-chart3', [{
+            x: best_sold_product_in_product_category.map(item => `${item.Sub_Category} - ${item.Product}`),
+            y: best_sold_product_in_product_category.map(item => item.Order_Quantity),
+            type: 'bar',
+            marker: {
+                color: '#e377c2'
+            },
+            title: 'BikeStore best verkochte producten per product categorie',
+        }], {
+            title: {
+                text: 'BikeStore best verkochte producten per product categorie',
+                font: {
+                    color: '#ffffff'
+                }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+                title: 'Hoeveelheid verkochte producten',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                }
+            },
+            xaxis: {
+                title: 'Product categorie',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                },
+            }
+        });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+}
     </script>
 </body>
 
