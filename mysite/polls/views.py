@@ -46,7 +46,7 @@ def vote(request, question_id):
         else:
             print("Invalid option.")
             pagina = "polls/detail.html"
-
+ 
         question = get_object_or_404(Question, pk=question_id)
         try:
             selected_choice = question.choice_set.get(pk=request.POST["choice"])
