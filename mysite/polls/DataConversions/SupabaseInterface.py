@@ -4,8 +4,10 @@ import json
 from datetime import datetime
 
 class genID():
-    def __init__(self) -> None:
+    def __init__(self, prefix = None) -> None:
         self.prefix = 's_'
+        if prefix: 
+            self.prefix = prefix
         self.number = 0 
     
     def id(self):
