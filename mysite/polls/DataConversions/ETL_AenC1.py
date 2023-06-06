@@ -1,22 +1,23 @@
 import pandas as pd
 import pyodbc
 import numpy as np
+from DBConnectie import DBConn
 
-import warnings
-with warnings.catch_warnings(record=True):
-    warnings.simplefilter("always")
-conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Maike\Desktop\CompleetSterSchema.accdb;')
+Product = DBConn.toDf(DBConn.productSUP)
+sales_order = DBConn.toDf(DBConn.sales_orderSUP)
+sales_order_item = DBConn.toDf(DBConn.sales_order_itemSUP)
+
 
 ### A&C 1
 
-def ComposeProductTable():
+def ComposeProductTable(Product):
     '''Composes the Product Table according to the ETL.'''
-    Product = pd.read_sql("SELECT id, name, description FROM product", conn)    
+    Product = Product[['id', 'name', 'description']]    
     return Product
 
-def ComposedateTable():
+def ComposedateTable(sales_order):
     '''Composes the Date Table according to the ETL.'''
-    date = pd.read_sql("SELECT order_date FROM sales_order", conn)
+    date = sales_order[['order_date']]
     date['order_date'] = pd.Series(np.unique(date['order_date']))
     date['order_date'] = pd.to_datetime(date['order_date'])
     date = date.dropna()
@@ -26,10 +27,10 @@ def ComposedateTable():
     # print(date)
     return date
 
-def ComposeSalesOrder():
-    Sales_order_item =  pd.read_sql("SELECT id, prod_id, quantity FROM sales_order_item", conn)
-    Product =  pd.read_sql("SELECT id , unit_price FROM product", conn)
-    Sales_order =  pd.read_sql("SELECT id, order_date, region FROM sales_order", conn)
+def ComposeSalesOrder(sales_order_item, product, sales_order):
+    Sales_order_item =  sales_order_item[['id', 'prod_id', 'quantity']]
+    Product = product[['id', 'unit_price']]
+    Sales_order = sales_order[['id', 'order_date', 'region']]
     res = pd.merge(Sales_order_item, Product, how='left', left_on='prod_id', right_on='id')
     res = pd.merge(res, Sales_order, how='left', left_on='id_x', right_on='id')
     res.drop(['id'], axis=1, inplace=True)
@@ -38,10 +39,9 @@ def ComposeSalesOrder():
     return res
 
 if __name__ ==  "__main__":
-    # df = ComposedateTable()
-    # df = ComposeProductTable()
-    # df = ComposeEmployeeTable()
-    df = ComposeSalesOrder()
+    #df = ComposedateTable(sales_order)
+    #df = ComposeProductTable(Product)
+    #df = ComposeSalesOrder(sales_order_item, Product, sales_order)
     # df = cleanEmpl(df)
     print(df)
     # parseDate()
