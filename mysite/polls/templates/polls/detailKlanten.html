@@ -18,128 +18,132 @@
                 <select id="ageGroup1" onchange="fetchProductPerCustomerGroup()"></select>
             </div>
             <div class="column1" style="display: inline-block; width: 49%;">
-              <div id="sales-bar-chart"></div>
+                <div id="sales-bar-chart"></div>
             </div>
             <div class="column2" style="display: inline-block; width: 49%;">
-              <div id="sales-bar-chart2"></div>
+                <div id="sales-bar-chart2"></div>
             </div>
             <div class="column1" style="display: inline-block; width: 100%;">
-              <div id="sales-bar-chart3"></div>
+                <div id="sales-bar-chart3"></div>
             </div>
         </div>
     </div>
     <script>
+        updateCharts();
+        setInterval(updateCharts, 300000);
 
-        fetch('/getAgeGroups')
-    .then(response => response.json())
-    .then(data => {
-        var ageGroups = data.age_groups;
-        var select = document.getElementById("ageGroup1");
-        for (var i = 0; i < ageGroups.length; i++) {
-            var opt = ageGroups[i];
-            var el = document.createElement("option");
-            el.textContent = opt;
-            el.value = opt;
-            select.appendChild(el);
+        function updateCharts() {
+            fetch('/getAgeGroups')
+                .then(response => response.json())
+                .then(data => {
+                    var ageGroups = data.age_groups;
+                    var select = document.getElementById("ageGroup1");
+                    select.innerHTML = ""; // Clear previous options
+                    for (var i = 0; i < ageGroups.length; i++) {
+                        var opt = ageGroups[i];
+                        var el = document.createElement("option");
+                        el.textContent = opt;
+                        el.value = opt;
+                        select.appendChild(el);
+                    }
+                    fetchProductPerCustomerGroup();
+                });
         }
-        fetchProductPerCustomerGroup();
-    });
-    
-    function fetchProductPerCustomerGroup() {
-        var ageGroup = document.getElementById("ageGroup1").value;
-        getProductPerCustomerGroup(ageGroup);
-    }
-    
-    function getProductPerCustomerGroup(ageGroup) {
-      fetch(`/getproductpercustomergroup/${ageGroup}/`)
-      .then(response => response.json())
-      .then(data => {
-        var product_per_customergroup = data.product_per_customergroup;
-        
-        var xValues = product_per_customergroup.map(item => item.Product);
-        var yValues = product_per_customergroup.map(item => item.Order_Quantity);
 
-        Plotly.newPlot('sales-bar-chart', [{
-          x: xValues,
-          y: yValues,
-          type: 'bar',
-          marker: {
-            color: '#e377c2'
-          },
-        }], {
-          title: {
-            text: 'Producten per klantgroep',
-            font: {
-              color: '#ffffff'
-            }
-          },
-          plot_bgcolor: '#212121',
-          paper_bgcolor: '#212121',
-          yaxis: {
-            title: 'Aantal Verkocht',
-            color: '#ffffff',
-            tickfont: {
-              color: '#ffffff'
-            }
-          },
-          xaxis: {
-            title: 'Producten',
-            color: '#ffffff',
-            tickfont: {
-              color: '#ffffff'
-            },
-          }
-        });
-      })
-      .catch(error => {
-        console.error(error);
-    });
-  }
-
-  fetch('/getmostprofitpercustomergroup')
-  .then(response => response.json())
-  .then(data => {
-    var most_profit_per_customergroup = data.most_profit_per_customergroup;
-
-    var xValues = most_profit_per_customergroup.map(item => item.Age_Group);
-    var yValues = most_profit_per_customergroup.map(item => item.Profit);
-
-
-    Plotly.newPlot('sales-bar-chart2', [{
-      x: xValues,
-      y: yValues,
-      type: 'bar',
-      marker: {
-        color: '#e377c2'
-      },
-    }], {
-      title: {
-        text: 'Meeste winst per klantgroep',
-        font: {
-          color: '#ffffff'
+        function fetchProductPerCustomerGroup() {
+            var ageGroup = document.getElementById("ageGroup1").value;
+            getProductPerCustomerGroup(ageGroup);
         }
-      },
-      plot_bgcolor: '#212121',
-      paper_bgcolor: '#212121',
-      yaxis: {
-        title: 'Winst',
-        color: '#ffffff',
-        tickfont: {
-          color: '#ffffff'
+
+        function getProductPerCustomerGroup(ageGroup) {
+            fetch(`/getproductpercustomergroup/${ageGroup}/`)
+                .then(response => response.json())
+                .then(data => {
+                    var product_per_customergroup = data.product_per_customergroup;
+
+                    var xValues = product_per_customergroup.map(item => item.Product);
+                    var yValues = product_per_customergroup.map(item => item.Order_Quantity);
+
+                    Plotly.newPlot('sales-bar-chart', [{
+                        x: xValues,
+                        y: yValues,
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                    }], {
+                        title: {
+                            text: 'Producten per klantgroep',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Aantal Verkocht',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
-      },
-      xaxis: {
-        title: 'Klantgroep',
-        color: '#ffffff',
-        tickfont: {
-          color: '#ffffff'
-        },
-      }
-    });
-  })
-  .catch(error => {
-    console.error(error);
-});
-  </script>
+
+        fetch('/getmostprofitpercustomergroup')
+            .then(response => response.json())
+            .then(data => {
+                var most_profit_per_customergroup = data.most_profit_per_customergroup;
+
+                var xValues = most_profit_per_customergroup.map(item => item.Age_Group);
+                var yValues = most_profit_per_customergroup.map(item => item.Profit);
+
+                Plotly.newPlot('sales-bar-chart2', [{
+                    x: xValues,
+                    y: yValues,
+                    type: 'bar',
+                    marker: {
+                        color: '#e377c2'
+                    },
+                }], {
+                    title: {
+                        text: 'Meeste winst per klantgroep',
+                        font: {
+                            color: '#ffffff'
+                        }
+                    },
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    yaxis: {
+                        title: 'Winst',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    xaxis: {
+                        title: 'Klantgroep',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        },
+                    }
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 </body>
 </html>

@@ -26,7 +26,7 @@
     <script>
         updateCharts();
         setInterval(updateCharts, 300000);
-        
+
         function updateCharts() {
             fetch('/getDepartments')
                 .then(response => response.json())
@@ -42,65 +42,65 @@
                     }
                     fetchDepartment();
                 });
+        }
 
-            function fetchDepartment() {
-                var department = document.getElementById("department1").value;
-                if (department && department != 'R & D') {
-                    fetchSalarisPerMedewerkerPerDepartment(department);
-                } else if (department && department == 'R & D') {
-                    fetchSalarisPerMedewerkerPerDepartment('R%20&%20D');
-                }
+        function fetchDepartment() {
+            var department = document.getElementById("department1").value;
+            if (department && department != 'R & D') {
+                fetchSalarisPerMedewerkerPerDepartment(department);
+            } else if (department && department == 'R & D') {
+                fetchSalarisPerMedewerkerPerDepartment('R%20&%20D');
             }
+        }
 
-            function fetchSalarisPerMedewerkerPerDepartment(department) {
-                fetch(`/getSalaryPerEmployeePerDepartment/${department}/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        var salaris_per_medewerker_per_department = data.salary_per_employee_per_department;
+        function fetchSalarisPerMedewerkerPerDepartment(department) {
+            fetch(`/getSalaryPerEmployeePerDepartment/${department}/`)
+                .then(response => response.json())
+                .then(data => {
+                    var salaris_per_medewerker_per_department = data.salary_per_employee_per_department;
 
-                        if (salaris_per_medewerker_per_department && salaris_per_medewerker_per_department.length > 0) {
-                            var xValues = salaris_per_medewerker_per_department.map(item => `${item.emp_fname}  ${item.emp_lname}`);
-                            var yValues = salaris_per_medewerker_per_department.map(item => item.salary);
+                    if (salaris_per_medewerker_per_department && salaris_per_medewerker_per_department.length > 0) {
+                        var xValues = salaris_per_medewerker_per_department.map(item => `${item.emp_fname}  ${item.emp_lname}`);
+                        var yValues = salaris_per_medewerker_per_department.map(item => item.salary);
 
-                            Plotly.newPlot('sales-bar-chart', [{
-                                x: xValues,
-                                y: yValues,
-                                type: 'bar',
-                                marker: {
-                                    color: '#e377c2'
-                                },
-                            }], {
-                                title: {
-                                    text: 'Salaris per medewerker per department',
-                                    font: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                plot_bgcolor: '#212121',
-                                paper_bgcolor: '#212121',
-                                yaxis: {
-                                    title: 'Salaris',
-                                    color: '#ffffff',
-                                    tickfont: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                xaxis: {
-                                    title: 'Medewerker',
-                                    color: '#ffffff',
-                                    tickfont: {
-                                        color: '#ffffff'
-                                    },
+                        Plotly.newPlot('sales-bar-chart', [{
+                            x: xValues,
+                            y: yValues,
+                            type: 'bar',
+                            marker: {
+                                color: '#e377c2'
+                            },
+                        }], {
+                            title: {
+                                text: 'Salaris per medewerker per department',
+                                font: {
+                                    color: '#ffffff'
                                 }
-                            });
-                        } else {
-                            document.getElementById("sales-bar-chart5").innerHTML = "Er zijn geen medewerkers gevonden voor dit department.";
-                        }
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            }
+                            },
+                            plot_bgcolor: '#212121',
+                            paper_bgcolor: '#212121',
+                            yaxis: {
+                                title: 'Salaris',
+                                color: '#ffffff',
+                                tickfont: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            xaxis: {
+                                title: 'Medewerker',
+                                color: '#ffffff',
+                                tickfont: {
+                                    color: '#ffffff'
+                                },
+                            }
+                        });
+                    } else {
+                        document.getElementById("sales-bar-chart5").innerHTML = "Er zijn geen medewerkers gevonden voor dit department.";
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
     </script>
 </body>
