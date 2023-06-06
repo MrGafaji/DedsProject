@@ -17,6 +17,7 @@ def ComposeLeverancierTable():
 def ComposeProductTable():
     '''Composes the Product Table according to the ETL.'''
     Product = pd.read_sql("SELECT ProductID, Name FROM dbo_Production_Product", conn)
+    Product = Product.rename(columns={"ProductID": 'id', 'Name': 'name'})
     # print(Product)
     
     return Product

@@ -11,8 +11,7 @@ conn = pyodbc.connect(r'Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:
 
 def ComposeProductTable():
     '''Composes the Product Table according to the ETL.'''
-    Product = pd.read_sql("SELECT id, name, description, color, Category FROM product", conn)    
-    Product = Product.rename(columns={'Category': 'category'})
+    Product = pd.read_sql("SELECT id, name, description FROM product", conn)    
     return Product
 
 def ComposedateTable():

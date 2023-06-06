@@ -17,7 +17,7 @@ def ComposeEmployeeTable():
 
 def ComposeProductTable():
     '''Composes the Employee Table according to the ETL.'''
-    Product = pd.read_sql("SELECT * FROM product", conn)
+    Product = pd.read_sql("SELECT id, name, description FROM product", conn)
     # print(Product)
     
     return Product
@@ -55,9 +55,9 @@ def ComposeSalesOrder():
 
 if __name__ ==  "__main__":
     # df = ComposedateTable()
-    print(ComposeProductTable())
+    # print(ComposeProductTable())
     # df = ComposeEmployeeTable()
-    # df = ComposeSalesOrder()
+    df = ComposeSalesOrder()
     # df = cleanEmpl(df)
-    # print(df)
+    print(df)
     # parseDate()
