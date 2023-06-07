@@ -30,7 +30,7 @@ urlpatterns = [
     ##supplier
     path('getQtySoldProductsPerSupplier/', AdventureWorks.get_qty_sold_products_per_supplier, name='getQtySoldProductsPerSupplier'),
     path('getAmountMoneyPerSupplier/', AdventureWorks.get_amount_money_per_supplier, name='getAmountMoneyPerSupplier'),
-    
+    path('getMostSoldProducts/', AdventureWorks.get_most_sold_products, name='getMostSoldProducts'),    
     ##machine learning
     path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
     path('cluster/', Clustering.get_cluster, name='cluster')

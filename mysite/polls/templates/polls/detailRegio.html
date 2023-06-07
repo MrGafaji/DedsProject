@@ -34,8 +34,34 @@
         updateCharts();
 
         setInterval(updateCharts, 300000);
-
+        
         function updateCharts() {
+            fetch('/getDepartments')
+                .then(response => response.json())
+                .then(data => {
+                    var departments = data.departments;
+                    var select = document.getElementById("department1");
+                    select.innerHTML = "";
+                    for (var i = 0; i < departments.length; i++) {
+                        var opt = departments[i];
+                        var el = document.createElement("option");
+                        el.textContent = opt;
+                        el.value = opt;
+                        select.appendChild(el);
+                    }
+                    fetchDepartment();
+                });
+            }
+
+            function fetchDepartment() {
+                var department = document.getElementById("department1").value;
+                if (department && department != 'R & D') {
+                    fetchSalarisPerMedewerkerPerDepartment(department);
+                } else if (department && department == 'R & D') {
+                    fetchSalarisPerMedewerkerPerDepartment('R%20&%20D');
+                }
+            }
+
             fetch('/getSalesPerRegion')
                 .then(response => response.json())
                 .then(data => {
@@ -203,32 +229,6 @@
                         console.error(error);
                     });
             }
-
-            fetch('/getDepartments')
-                .then(response => response.json())
-                .then(data => {
-                    var departments = data.departments;
-                    var select = document.getElementById("department1");
-                    select.innerHTML = ""; // Clear previous options
-                    for (var i = 0; i < departments.length; i++) {
-                        var opt = departments[i];
-                        var el = document.createElement("option");
-                        el.textContent = opt;
-                        el.value = opt;
-                        select.appendChild(el);
-                    }
-                    fetchDepartment();
-                });
-
-            function fetchDepartment() {
-                var department = document.getElementById("department1").value;
-                if (department && department != 'R & D') {
-                    fetchSalarisPerMedewerkerPerDepartment(department);
-                } else if (department && department == 'R & D') {
-                    fetchSalarisPerMedewerkerPerDepartment('R%20&%20D');
-                }
-            }
-        }
     </script>
 </body>
 </html>
