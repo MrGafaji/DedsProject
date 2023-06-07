@@ -1,14 +1,16 @@
 import pandas as pd
 import pyodbc
 import numpy as np
-from DBConnectie import DBConn
+from SupabaseInterface import SupabaseInterface as db, genID
 
-employee = DBConn.toDf(DBConn.employeeSUP)
-department = DBConn.toDf(DBConn.departmentSUP)
-Product = DBConn.toDf(DBConn.productSUP)
-bonus = DBConn.toDf(DBConn.bonusSUP)
-sales_order = DBConn.toDf(DBConn.sales_orderSUP)
-sales_order_item = DBConn.toDf(DBConn.sales_order_itemSUP)
+base = db()
+
+employee = base.GetFullTable('Employee')
+department = base.GetFullTable('Department')
+Product = base.GetFullTable('product2')
+bonus = base.GetFullTable('Bonus')
+sales_order = base.GetFullTable('SalesOrders')
+sales_order_item = base.GetFullTable('salesOrderItem')
 
 ### A&C 2
 def ComposeEmployeeTable(department, employee):
