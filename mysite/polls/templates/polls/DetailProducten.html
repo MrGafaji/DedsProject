@@ -23,6 +23,8 @@
         <h1 id="accuracy"></h1>
         <h1>K-Means Clustering:</h1>
         <div id="clustering-chart"></div>
+        <div id="sales-bar-chart2"></div>
+        <div id="sales-bar-chart3"></div>
     </div>
     <script>
         updateCharts();
@@ -30,48 +32,6 @@
         setInterval(updateCharts, 300000);
 
         function updateCharts() {
-            fetch('/getProductSales')
-                .then(response => response.json())
-                .then(data => {
-                    var sales_per_region = data.sales_per_region;
-                    Plotly.react('sales-bar-chart', [{
-                        x: sales_per_region.map(item => item.region),
-                        y: sales_per_region.map(item => item.total_product_sales),
-                        type: 'bar',
-                        marker: {
-                            color: '#e377c2'
-                        },
-                        title: 'Sales per Regio',
-                    }], {
-                        title: {
-                            text: 'Sales per Regio',
-                            font: {
-                                color: '#ffffff'
-                            }
-                        },
-                        plot_bgcolor: '#212121',
-                        paper_bgcolor: '#212121',
-                        yaxis: {
-                            title: 'Hoeveelheid producten',
-                            color: '#ffffff',
-                            tickfont: {
-                                color: '#ffffff'
-                            }
-                        },
-                        xaxis: {
-                            title: 'Regio',
-                            color: '#ffffff',
-                            tickfont: {
-                                color: '#ffffff'
-                            },
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-
-
             fetch('/predict_bonus', {
                 headers: {
                     'X-CSRFToken': '{{ csrf_token }}'
@@ -108,7 +68,7 @@
                         y: predictedProfits,
                         type: 'bar',
                         marker: {
-                            color: 'blue'
+                            color: '#e377c2'
                         }
                     }];
 
@@ -285,5 +245,4 @@
 
     </script>
 </body>
-
 </html>
