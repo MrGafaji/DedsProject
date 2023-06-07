@@ -35,5 +35,4 @@ urlpatterns = [
     ##machine learning
     path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
     path('cluster/', Clustering.get_cluster, name='cluster')
->>>>>>>>> Temporary merge branch 2
 ]
