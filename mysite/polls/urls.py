@@ -6,6 +6,7 @@ from polls.DataConversions import BikeStore as BikeStore
 from polls.DataConversions import BikeStore as Bike
 from polls.DataConversions import RandomForest as RandomForest
 from polls.DataConversions import Clustering as Clustering
+from polls.DataConversions import updateScript as Update
 
 app_name = "polls"
 urlpatterns = [
@@ -33,5 +34,8 @@ urlpatterns = [
     
     ##machine learning
     path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
-    path('cluster/', Clustering.get_cluster, name='cluster')
+    path('cluster/', Clustering.get_cluster, name='cluster'),
+
+    ##update
+    path('update/', Update.Update_All_Final_Tables, name='update'),
 ]
