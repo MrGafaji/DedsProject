@@ -8,15 +8,10 @@ Vendor = DBConn.toDf(DBConn.vendorSUP)
 merged_data = pd.merge(productVendor, Vendor, left_on='BusinessEntityID', right_on='BusinessEntityID')
 
 def get_qty_sold_products_per_supplier(request):
-<<<<<<< HEAD
-    amount_sold_products_per_supplier = merged_data.groupby('Name')['StandardPrice'].sum().reset_index()
-    amount_sold_products_per_supplier.rename(columns={'StandardPrice': 'total_sales_amount'}, inplace=True)
-=======
     qty_sold_products_per_supplier = merged_data.groupby('Name')['OnOrderQty'].sum().reset_index()
     qty_sold_products_per_supplier = qty_sold_products_per_supplier.sort_values(by='OnOrderQty', ascending=False)
     qty_sold_products_per_supplier = qty_sold_products_per_supplier[qty_sold_products_per_supplier['OnOrderQty'] > 0]
     qty_sold_products_per_supplier.rename(columns={'OnOrderQty': 'total_sales_quantity'}, inplace=True)
->>>>>>> 67230644e4dec284651538eb02e906bd32630070
 
     result = {
         'qty_sold_products_per_supplier': qty_sold_products_per_supplier.to_dict('records')
