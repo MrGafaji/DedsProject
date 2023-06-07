@@ -26,6 +26,7 @@
         <div id="sales-bar-chart2" style="display: inline-block; width: 49%;"></div>
         <div id="sales-bar-chart3" style="display: inline-block; width: 49%;"></div>
         <div id="sales-bar-chart4" style="display: inline-block; width: 49%;"></div>
+        <div id="sales-bar-chart5" style="display: inline-block; width: 49%;"></div>
     </div>
     <script>
         updateCharts();
@@ -283,8 +284,45 @@
     .catch(error => {
         console.error(error);
     });
-
     
+    fetch('/getBestSoldProductInProductCategoryAdventure')
+    .then(response => response.json())
+    .then(data => {
+        var best_sold_product_in_product_category = data.most_sold_products_per_product_category;
+        Plotly.newPlot('sales-bar-chart5', [{
+            x: best_sold_product_in_product_category.map(item => item.CategoryName),
+            y: best_sold_product_in_product_category.map(item => item.total_sales_quantity),
+            type: 'bar',
+            marker: {
+                color: '#e377c2'
+            },
+            title: 'Northwind best verkochte producten per product categorie',
+        }], {
+            title: {
+                text: 'Northwind best verkochte producten per product categorie',
+                font: {
+                    color: '#ffffff'
+                }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+                title: 'Hoeveelheid verkochte producten',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                }
+            },
+            xaxis: {
+                title: 'Product categorie',
+                color: '#ffffff',
+                tickfont: {
+                    color: '#ffffff'
+                },
+            }
+        });
+    })
+
 }
 
     </script>
