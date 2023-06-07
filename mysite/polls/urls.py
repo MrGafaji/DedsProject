@@ -29,8 +29,7 @@ urlpatterns = [
     path('getBestSoldProductInProductCategoryBike/', Bike.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryBike'),
     ##supplier
 
-    path('getAmountSoldProductsPerSupplier/', AdventureWorks.get_qty_sold_products_per_supplier, name='getAmountSoldProductsPerSupplier'),
-    
+    path('getQtySoldProductsPerSupplier/', AdventureWorks.get_qty_sold_products_per_supplier, name='getQtySoldProductsPerSupplier'),
     
     ##machine learning
     path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
