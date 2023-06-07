@@ -8,10 +8,17 @@ sales = base.GetFullTable('Sales')
 
 ### BikeStore
 def ComposeSales():
-    
     Sales = sales.reset_index()
     Sales = Sales.rename(columns={"index":"Sales_ID"})
-
+    Product = ComposeProductTable()
+    Country = ComposeCountry()
+    Customer = ComposeCustomerTable()
+    Sales = pd.merge(Sales, Product, on=['Product', 'Product_Category', 'Sub_Category'], how='left')
+    Sales = pd.merge(Sales, Country, on=['Country', 'State'], how='left')
+    Sales = Sales.drop(['Product', 'Product_Category', 'Sub_Category', 'Country', 'State', 'Day', 'Month', 'Year', 'Unit_Cost', 'Profit'], axis=1)
+    Sales = pd.merge(Sales, Customer, on=['Customer_Age', 'Age_Group', 'Customer_Gender'], how='left')
+    Sales = Sales.drop(['Customer_Age', 'Age_Group', 'Customer_Gender'], axis = 1)
+    
     return Sales
 
 def ComposeProductTable():
