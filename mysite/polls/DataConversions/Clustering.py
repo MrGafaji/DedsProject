@@ -30,5 +30,5 @@ def get_cluster(request):
         'centers': centers.tolist(),
         'dataPoints': data[features].to_dict(orient='records')
     }
-
+    DBConn.supabase.auth.sign_out()
     return JsonResponse(result, safe=False)

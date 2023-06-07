@@ -52,7 +52,7 @@ def get_best_sold_product_in_product_category(request):
 
     return JsonResponse(result, safe=False)
 
-
+DBConn.supabase.auth.sign_out()
 # if __name__ == "__main__":
 #     sales_data = get_product_per_customergroup()
 #     print(sales_data)
