@@ -4,11 +4,11 @@ from sklearn import preprocessing
 from .DBConnectie import DBConn
 from django.http import JsonResponse
 
-def predict_bonus(request):
+def get_cluster(request):
     df = DBConn.toDf(DBConn.salesSUP)
-    data = df
+    data = df.copy()
 
-    features = ['Order_Quantity', 'Unit_Price']
+    features = ["Order_Quantity", "Profit"]
 
     le = preprocessing.LabelEncoder()
     for feature in features:
@@ -20,18 +20,15 @@ def predict_bonus(request):
     kmeans = KMeans(n_clusters=3)
     kmeans.fit(X)
 
-
     labels = kmeans.predict(X)
-
-
     centers = kmeans.cluster_centers_
 
-
-    labels = labels.tolist()
+    data['Cluster'] = labels
 
     result = {
-        'labels': labels,
-        'centers': centers.tolist()
+        'labels': labels.tolist(),
+        'centers': centers.tolist(),
+        'dataPoints': data[features].to_dict(orient='records')
     }
     DBConn.supabase.auth.sign_out()
     return JsonResponse(result, safe=False)
