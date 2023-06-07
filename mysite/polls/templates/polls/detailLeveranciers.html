@@ -29,8 +29,9 @@
         </div>
     </div>
     <script>
-        fetch('/perform_frequenitemset')
-            .then(response => response.json())
+        fetch('/perform_frequentitemset')
+            .then(response =>
+                response.json())
             .then(data => {
                 // Handle the fetched data here
                 var itemsetElement = document.getElementById("itemset");

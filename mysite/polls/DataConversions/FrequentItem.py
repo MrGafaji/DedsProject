@@ -7,17 +7,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def perform_frequenitemset(request):
+def perform_frequentitemset(request):
 
     # Retrieve the dataset from your source (e.g., database, CSV file)
     productVendor = DBConn.toDf(DBConn.productVendor)
     vendor = DBConn.toDf(DBConn.vendor)
 
-    merged_data = pd.merge(productVendor, vendor, left_on='BusinessEntityID', right_on='BusinessEntityID')
+    merged_data = pd.merge(
+        productVendor, vendor, left_on='BusinessEntityID', right_on='BusinessEntityID')
 
     # transactions = merged_data[['BusinessEntityID', 'ProductID']].values.tolist()
-    transactions = merged_data.groupby('BusinessEntityID')['ProductID'].apply(list).tolist()
-
+    transactions = merged_data.groupby('BusinessEntityID')[
+                                       'ProductID'].apply(list).tolist()
 
     # Perform one-hot encoding of the transactions
     te = TransactionEncoder()
@@ -26,8 +27,10 @@ def perform_frequenitemset(request):
     print(transactions[:10])  # Check the first 10 transactions
 
     # Apply Apriori algorithm to find frequent itemsets
-    frequent_itemsets = apriori(df_encoded, min_support=0.01, use_colnames=True)
-    frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
+    frequent_itemsets = apriori(
+        df_encoded, min_support=0.01, use_colnames=True)
+    frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(
+        lambda x: len(x))
     frequent_itemsets = frequent_itemsets[frequent_itemsets['length'] > 1]
 
     # Convert the frequent itemsets DataFrame to a list of dictionaries
@@ -38,14 +41,13 @@ def perform_frequenitemset(request):
     for itemset in frequent_itemsets_list:
         itemset['itemsets'] = list(itemset['itemsets'])
 
-
     # Extract the itemsets and their support values
-    itemsets = [', '.join(str(item) for item in itemset['itemsets']) for itemset in frequent_itemsets_list]
+    itemsets = [', '.join(str(item) for item in itemset['itemsets'])
+            for itemset in frequent_itemsets_list]
     supports = [itemset['support'] for itemset in frequent_itemsets_list]
     print(itemsets)
     print(supports)
 
-    # sns.set(style='whitegrid')  # Set Seaborn style
     plt.figure(figsize=(10, 6))
     sns.barplot(x=itemsets, y=supports, color='steelblue')
     plt.xticks(rotation=90)

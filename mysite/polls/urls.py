@@ -22,7 +22,7 @@ urlpatterns = [
     path('getDepartments/', Sales.get_Departmens, name='getDepartments'),
     path('getSalaryPerEmployeePerDepartment/<str:department>/', Sales.get_Salary_Per_Employee_Per_Department, name='getSalaryPerEmployeePerDepartment'),
     path('perform_regression/', Regression.perform_regression, name='perform_regression'),
-    path('perform_frequenitemset/', FrequentItem.perform_frequenitemset, name='perform_frequenitemset'),
+    path('perform_frequentitemset/', FrequentItem.perform_frequentitemset, name='perform_frequentitemset'),
 
 
 ]
