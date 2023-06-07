@@ -62,14 +62,31 @@ button {
 }
 </style>
 <div class="btn-group">
-{% if latest_question_list %}
+    {% if latest_question_list %}
     <ul>
     <img src="{% static 'images/logoImglight.png' %}" alt="logo" class="logo">
     {% for question in latest_question_list %}
     <a href="{% url 'polls:detail' question.id %}" class="">{{ question.question_text }}</a>
     {% endfor %}
+
     </ul>
-{% else %}
+    {% else %}
     <p>No statistics are available.</p>
-{% endif %}
+    {% endif %}
 </div>
+<button id="update">update database</button>
+<script>
+    document.getElementById("update").addEventListener("click", function () {
+        fetch('/update/')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("update").innerHTML = "Database Updated";
+                } else {
+                    console.error('Error updating database');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating database:', error);
+            });
+    });
+</script>
