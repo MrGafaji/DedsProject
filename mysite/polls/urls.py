@@ -28,7 +28,12 @@ urlpatterns = [
     path('getmostprofitpercustomergroup/', Bike.get_most_profit_per_customergroup, name='get_most_profit_per_customergroup'),
     path('getBestSoldProductInProductCategoryBike/', Bike.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryBike'),
     ##supplier
+<<<<<<< HEAD
     path('getQtySoldProductsPerSupplier/', AdventureWorks.get_qty_sold_products_per_supplier, name='getQtySoldProductsPerSupplier'),
+=======
+
+    path('getAmountSoldProductsPerSupplier/', AdventureWorks.get_qty_sold_products_per_supplier, name='getAmountSoldProductsPerSupplier'),
+>>>>>>> 67230644e4dec284651538eb02e906bd32630070
     
     
     ##machine learning

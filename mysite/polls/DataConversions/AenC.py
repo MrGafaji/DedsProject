@@ -96,7 +96,7 @@ def get_Salary_Per_Employee_Per_Department(request, department):
     }
     return JsonResponse(result, safe=False)
 
-
+DBConn.supabase.auth.sign_out()
 
 # if __name__ == "__main__":
 #     sales_data = get_sales_per_region_per_month(null, 'Noord', 2019)
