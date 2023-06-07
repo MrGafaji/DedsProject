@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from polls.DataConversions import AenC as Sales
 from polls.DataConversions import AdventureWorks as AdventureWorks
-from polls.DataConversions import BikeStore as BikeStore
 from polls.DataConversions import BikeStore as Bike
 from polls.DataConversions import RandomForest as RandomForest
 from polls.DataConversions import Clustering as Clustering
@@ -31,11 +30,11 @@ urlpatterns = [
     ##supplier
     path('getQtySoldProductsPerSupplier/', AdventureWorks.get_qty_sold_products_per_supplier, name='getQtySoldProductsPerSupplier'),
     path('getAmountMoneyPerSupplier/', AdventureWorks.get_amount_money_per_supplier, name='getAmountMoneyPerSupplier'),
-    
+    path('getMostSoldProducts/', AdventureWorks.get_most_sold_products, name='getMostSoldProducts'),    
     ##machine learning
     path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
     path('cluster/', Clustering.get_cluster, name='cluster'),
-
+    path('getBestSoldProductInProductCategoryAdventure/', AdventureWorks.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryAdventure'),
     ##update
     path('update/', Update.Update_All_Final_Tables, name='update'),
 ]
