@@ -1,6 +1,4 @@
 import pandas as pd
-import pyodbc
-import os
 from django.http import JsonResponse
 from supabase import create_client, Client
 from pandas import json_normalize
@@ -26,8 +24,11 @@ class DBConn:
     salesOrderDetailSUP = supabase.table('SalesOrderDetail').select('*').execute().json()
     salesOrderHeaderSUP = supabase.table('SalesOrderHeader').select('*').execute().json()
     vendorSUP = supabase.table('Vendor').select('*').execute().json()
+    F_KlantSUP = supabase.table('F_Klant').select('*').execute().json()
+    F_StateSUP = supabase.table('F_State').select('*').execute().json()
     
     def toDf(tabel):
+        
         d = json.loads(tabel)
         df = json_normalize(d, 'data')
         return df

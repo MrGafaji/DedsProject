@@ -5,6 +5,7 @@ from polls.DataConversions import AdventureWorks as AdventureWorks
 from polls.DataConversions import BikeStore as BikeStore
 from polls.DataConversions import BikeStore as Bike
 from polls.DataConversions import RandomForest as RandomForest
+from polls.DataConversions import Clustering as Clustering
 
 app_name = "polls"
 urlpatterns = [
@@ -28,5 +29,9 @@ urlpatterns = [
     path('getBestSoldProductInProductCategoryBike/', Bike.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryBike'),
     ##supplier
     path('getAmountSoldProductsPerSupplier/', AdventureWorks.get_amount_sold_products_per_supplier, name='getAmountSoldProductsPerSupplier'),
-    path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus')
+    
+    
+    ##machine learning
+    path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
+    path('cluster/', Clustering.get_cluster, name='cluster')
 ]
