@@ -44,9 +44,28 @@
 
                 var graphData = [data.graphData, data.regressionLine];
                 var layout = {
-                    title: 'Regression Analysis',
-                    xaxis: { title: 'Salary' },
-                    yaxis: { title: 'Total Sales Amount' }
+                    title: {
+                        text: 'Regression Analysis',
+                        font: {
+                            color: '#ffffff'
+                        }
+                    },
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    xaxis: {
+                        title: 'Salary',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    yaxis: {
+                        title: 'Total Sales Amount',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    }
                 };
                 var config = { responsive: true };
 

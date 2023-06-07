@@ -1,17 +1,97 @@
+<!DOCTYPE html>
+<html>
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 
-<form action="{% url 'polls:statistieken' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <p>Leveranciers</p>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    </fieldset>
-    <input type="submit" value="haal statistieken op">
-    </form>
+<head>
+    <title>Leverancier data</title>
+    <h1>Leverancier data</h1>
+    <a href="/" id="Home button" onmouseover="this.style.color='#A9A9A9'" onmouseleave="this.style.color='#FFFFFF'"
+        style="background-color: gray;">Home</a>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/seaborn-colorblind@0.0.1/seaborn-colorblind.min.js"></script> -->
+</head>
+
+<body>
+    <div>
+        <div class="row">
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+            <div class="column2" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart2"></div>
+            </div>
+            <div class="column1" style="display: inline-block; width: 100%;">
+                <div id="sales-bar-chart3"></div>
+            </div>
+            <div id="itemset"></div>
+            <div id="itemset-graph"></div>
+        </div>
+    </div>
+    <script>
+        fetch('/perform_frequenitemset')
+            .then(response => response.json())
+            .then(data => {
+                // Handle the fetched data here
+                var itemsetElement = document.getElementById("itemset");
+
+                // Loop through the frequent itemsets and display them
+                data.forEach(itemset => {
+                    var itemsetString = Object.values(itemset).join(", ");
+                    var itemsetParagraph = document.createElement("p");
+                    itemsetParagraph.innerHTML = itemsetString;
+                    itemsetElement.appendChild(itemsetParagraph);
+                });
+
+                // Extract the itemsets and their support values from the data
+                var itemsets = data.map(itemset => itemset.itemsets);
+                var supports = data.map(itemset => itemset.support);
+
+                // Create the plot using Seaborn
+                var itemsetGraphElement = document.getElementById("itemset-graph");
+                var itemsetData = [{
+                    x: itemsets,
+                    y: supports,
+                    type: 'bar',
+                    marker: {
+                        color: 'steelblue',
+                        line: {
+                            color: 'black',
+                            width: 1
+                        }
+                    },
+                    opacity: 0.6
+                }];
+                var itemsetLayout = {
+                    title: {
+                        text: 'Frequent Itemsets',
+                        font: {
+                            color: '#ffffff'
+                        }
+                    },
+                    xaxis: {
+                        title: 'Itemsets',
+                        tickangle: 45,
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    yaxis: {
+                        title: 'Support',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    bargap: 0.5,
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121'
+                };
+                Plotly.newPlot(itemsetGraphElement, itemsetData, itemsetLayout);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
