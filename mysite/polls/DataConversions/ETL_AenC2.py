@@ -55,10 +55,10 @@ def ComposeSalesOrder(sales_order_item, Product, sales_order, employee, bonus):
 
 
 if __name__ ==  "__main__":
-    #df = ComposedateTable(sales_order)
+    df = ComposedateTable(sales_order)
     # print(ComposeProductTable())
     #df = ComposeEmployeeTable(department, employee)
-    df = ComposeSalesOrder(sales_order_item, Product, sales_order, employee, bonus)
+    # df = ComposeSalesOrder(sales_order_item, Product, sales_order, employee, bonus)
     # df = cleanEmpl(df)
     print(df)
     # parseDate()

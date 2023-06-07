@@ -20,9 +20,10 @@ def ETL():
     for _, row in customers.iterrows():
         rowDict = row.to_dict()
         newDict = {
-            's_id'        : idgen.id(),
+            's_id'      : idgen.id(),
             'state'     : rowDict['state'],
             'country'   : rowDict['country'],
+            'count'     : rowDict['count'],
         }
 
         base.InsertIntoTable('F_State', newDict)
