@@ -21,10 +21,10 @@ def ComposedateTable():
     date = sales_order[['order_date']]
     date['order_date'] = pd.Series(np.unique(date['order_date']))
     date['order_date'] = pd.to_datetime(date['order_date'])
-    print(date.info())
-    # date = date.dropna()
-    # date['month'] = date['order_date'].dt.month
-    # date['year'] = date['order_date'].dt.year
+    # print(date.info())
+    date = date.dropna()
+    date['month'] = date['order_date'].dt.month
+    date['year'] = date['order_date'].dt.year
 
     # print(date)
     return date
