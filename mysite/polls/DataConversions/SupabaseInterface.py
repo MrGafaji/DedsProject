@@ -44,12 +44,12 @@ class SupabaseInterface:
 if __name__ == '__main__':
     idgen = genID()
     db = SupabaseInterface()
-    ent = {'id': 3003, 's_id':idgen.id(), 'name': 'TestProd', 'description': '8 meter tall', 'sub_Category': 'Katten', 'category': 'Dieren'}
+    # ent = {'id': 3003, 's_id':idgen.id(), 'name': 'TestProd', 'description': '8 meter tall', 'sub_Category': 'Katten', 'category': 'Dieren'}
     # db.InsertIntoTable('F_Product', ent)
 
-    data = db.GetFullTable('F_Product')
+    data = db.GetFullTable('SalesOrderHeader')
     print(type(data))
     print(data)
-    print(data.columns)
+    print(data.info())
     # for i in range(10):
     #     print(idgen.id())

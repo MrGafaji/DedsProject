@@ -1,13 +1,10 @@
 import pandas as pd
 import pyodbc
 import numpy as np
-from DBConnectie import DBConn
+from SupabaseInterface import SupabaseInterface as db, genID
 
-Leveranciers = DBConn.toDf(DBConn.vendorSUP)
-Product = DBConn.toDf(DBConn.productionProductSUP)
-SalesOrderHeader = DBConn.toDf(DBConn.salesOrderHeaderSUP)
-SalesOrderDetail = DBConn.toDf(DBConn.salesOrderDetailSUP)
-ProductVendor = DBConn.toDf(DBConn.productVendorSUP)
+base = db()
+
 
 ### AdventureWorks
 def ComposeLeverancierTable(Leveranciers):
@@ -23,16 +20,18 @@ def ComposeProductTable(Product):
     
     return Product
 
-def ComposedateTable(SalesOrderHeader):
+def ComposedateTable():
     '''Composes the Date Table according to the ETL.'''
-    date = SalesOrderHeader[['OrderDate']]
-    date['OrderDate'] = pd.Series(pd.unique(date['OrderDate']))
-    date['OrderDate'] = pd.to_datetime(date['OrderDate'])
+    sales_order = base.GetFullTable('SalesOrderHeader')
+    date = sales_order[['OrderDate']]
+    date['OrderDate'] = pd.Series(np.unique(date['OrderDate']))
+    date['OrderDate'] = pd.to_datetime(date['OrderDate'], format="%d-%m-%Y %H:%M:%S")
+    print(date.info())
     date = date.dropna()
     date['month'] = date['OrderDate'].dt.month
     date['year'] = date['OrderDate'].dt.year
 
-# #     # print(date)
+    # print(date)
     return date
 
 
@@ -47,6 +46,10 @@ def ComposeSoldProductProductTable(SalesOrderHeader, SalesOrderDetail, ProductVe
 
 
 if __name__ ==  "__main__":
-    df = ComposeSoldProductProductTable(SalesOrderHeader)#ComposeSoldProductProductTable()
-    print(df)
-    print(df.info())
+    # df = ComposeSoldProductProductTable()
+    #ComposeSoldProductProductTable()
+    df = ComposedateTable()
+    # print(5)
+    # print(df)
+    print(6)
+    # print(df.info())
