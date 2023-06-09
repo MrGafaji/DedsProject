@@ -1,4 +1,3 @@
-
 from setuptools import setup
   
 setup(
@@ -72,7 +71,6 @@ setup(
         'scipy',
         'semver',
         'six',
-        'sklearn',
         'smmap',
         'sniffio',
         'sqlparse',
