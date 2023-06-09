@@ -6,11 +6,18 @@ from ETL_AdventureWorks import ComposedateTable as adwDates
 
 base = db()
 
-def ETL():
+def merge():
+    print(1)
     ac1 = ac1Dates()
+    print(3)
     adw = adwDates()
+    # adw = adw.rename({'order_date':'OrderDate'})
 
     Dates = pd.concat([ac1, adw], ignore_index=True)    
+    # _, row = next(Dates.iterrows())
+    # print('first row:')
+    # print(4)
+    # print(type(row['order_date'].date()))
     # print(row.info())
     for _, row in Dates.iterrows():
         rowDict = row.to_dict()
@@ -21,8 +28,8 @@ def ETL():
             'month'         : rowDict['month'],
         }
 
-        base.AddIfNotAlreadyInDBForOtherTables('F_Order_dates', newDict, ['order_date'])    
+        base.InsertIntoTable('F_Order_dates', newDict)    
 
 
 if __name__ == '__main__':
-    ETL()
+    merge()

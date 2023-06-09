@@ -5,7 +5,7 @@ import ETL_BideStore
 import pandas as pd
 from SupabaseInterface import SupabaseInterface as db, genID
 
-def ETL():
+def mergeProductDataFrames():
     base = db()
     idgen = genID()
     AC1 = ETL_AenC1.ComposeProductTable()
@@ -32,14 +32,14 @@ def ETL():
                 newDict['description'] = "not provided" 
         
 
-        base.AddIfNotAlreadyInDBForOtherTables('F_Product', newDict, ['id', 'name'])
+        base.InsertIntoTable('F_Product', newDict)
     return Product
 
 # TODO: Better splitting of names into names and descriptions
-
+# TODO: Make this script update the database if an entry is not in it
 
 if __name__ == '__main__':
-    data = ETL()
+    data = mergeProductDataFrames()
 
     # print(data)
     # print(data.info())

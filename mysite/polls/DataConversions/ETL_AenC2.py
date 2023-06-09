@@ -1,39 +1,31 @@
 import pandas as pd
 import pyodbc
 import numpy as np
-from SupabaseInterface import SupabaseInterface as db, genID
-# from DBConnectie import DBConn
+from DBConnectie import DBConn
 
-# employee = DBConn.toDf(DBConn.employeeSUP)
-# department = DBConn.toDf(DBConn.departmentSUP)
-# Product = DBConn.toDf(DBConn.productSUP)
-# bonus = DBConn.toDf(DBConn.bonusSUP)
-# sales_order = DBConn.toDf(DBConn.sales_orderSUP)
-# sales_order_item = DBConn.toDf(DBConn.sales_order_itemSUP)
+employee = DBConn.toDf(DBConn.employeeSUP)
+department = DBConn.toDf(DBConn.departmentSUP)
+Product = DBConn.toDf(DBConn.productSUP)
+bonus = DBConn.toDf(DBConn.bonusSUP)
+sales_order = DBConn.toDf(DBConn.sales_orderSUP)
+sales_order_item = DBConn.toDf(DBConn.sales_order_itemSUP)
 
 ### A&C 2
-def ComposeEmployeeTable():
+def ComposeEmployeeTable(department, employee):
     '''Composes the Employee Table according to the ETL.'''
-    base = db()
-    department = base.GetFullTable('Department')
-    employee = base.GetFullTable('Employee')
     Employee = employee[['emp_id', 'dept_id', 'bene_health_ins', 'bene_day_care', 'emp_fname', 'emp_lname']]
     Department = department[['dept_name', 'dept_id', 'dept_head_id']]
     res = pd.merge(Employee, Department, on = 'dept_id', how='left')
     return res
 
-def ComposeProductTable():
+def ComposeProductTable(product):
     '''Composes the Employee Table according to the ETL.'''
-    base = db()
-    product = base.GetFullTable('product2')
     Product = product[['id', 'name', 'description']]
     
     return Product
 
-def ComposedateTable():
+def ComposedateTable(sales_order):
     '''Composes the Employee Table according to the ETL.'''
-    base = db()
-    sales_order = base.GetFullTable('SalesOrders')
     date = sales_order[['order_date']] 
     date['order_date'] = pd.Series(np.unique(date['order_date']))
     date['order_date'] = pd.to_datetime(date['order_date'])
@@ -44,15 +36,7 @@ def ComposedateTable():
     # print(date)
     return date
 
-def ComposeSalesOrder():
-    base = db()
-    sales_order_item = base.GetFullTable('salesOrderItem')
-    Product = base.GetFullTable('product2')
-    sales_order = base.GetFullTable('SalesOrders')
-    employee = base.GetFullTable('Employee')
-    bonus = base.GetFullTable('Bonus')
-
-
+def ComposeSalesOrder(sales_order_item, Product, sales_order, employee, bonus):
     Sales_order_item = sales_order_item[['id', 'prod_id', 'quantity']] 
     Product = Product[['id' , 'unit_price']] 
     Sales_order = sales_order[['id', 'order_date', 'cust_id', 'sales_rep']] 
@@ -71,7 +55,7 @@ def ComposeSalesOrder():
 
 
 if __name__ ==  "__main__":
-    df = ComposedateTable()
+    df = ComposedateTable(sales_order)
     # print(ComposeProductTable())
     #df = ComposeEmployeeTable(department, employee)
     # df = ComposeSalesOrder(sales_order_item, Product, sales_order, employee, bonus)
