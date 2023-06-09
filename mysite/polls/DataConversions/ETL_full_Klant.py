@@ -21,7 +21,7 @@ def ETL():
     for _, row in customers.iterrows():
         rowDict = row.to_dict()
         newDict = {
-            'id'   : idgen.id(),
+            'id'            : idgen.id(),
             'age'           : rowDict['age'],
             'age_group'     : rowDict['age_group'],
             'gender'        : rowDict['gender'],

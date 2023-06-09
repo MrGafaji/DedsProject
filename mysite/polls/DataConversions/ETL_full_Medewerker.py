@@ -19,6 +19,7 @@ def ETL():
              'bene_day_care' : employee['bene_day_care'],
              'emp_fname' : employee['emp_fname'],
              'emp_lname' : employee['emp_lname'],
+             'salary' : employee['salary'],
              }
     empFrame = pd.DataFrame(empDict)
 
@@ -41,6 +42,7 @@ def ETL():
             'bene_day_care'     : rowDict['bene_day_care'],
             'emp_fname'         : rowDict['emp_fname'],
             'emp_lname'         : rowDict['emp_lname'],
+            'salary'            : rowDict['salary'],
         }
 
         base.InsertIntoTable('F_Employee', newDict)
