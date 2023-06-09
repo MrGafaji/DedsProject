@@ -29,6 +29,9 @@ class DBConn:
     Product1SUP = supabase.table('Product1').select('*').execute().json()
     WindOrderDetailsSUP = supabase.table('WindOrderDetails').select('*').execute().json()
     WindCategorySUP = supabase.table('WindCategorie').select('*').execute().json()
+    F_EmployeeSUP = supabase.table('F_Employee').select('*').execute().json()
+    F_Order_FactSUP = supabase.table('F_Order_Fact').select('*').execute().json()
+    F_Order_dates = supabase.table('F_Order_dates').select('*').execute().json()
     
     def toDf(tabel):
         

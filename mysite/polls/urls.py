@@ -34,6 +34,7 @@ urlpatterns = [
     ##machine learning
     path('predict_bonus/', RandomForest.predict_bonus, name='predict_bonus'),
     path('cluster/', Clustering.get_cluster, name='cluster'),
+    
     path('getBestSoldProductInProductCategoryAdventure/', AdventureWorks.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategoryAdventure'),
     ##update
     path('update/', Update.Update_All_Final_Tables, name='update'),
