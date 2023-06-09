@@ -1,5 +1,4 @@
 from DataConversions.SupabaseInterface import SupabaseInterface as db, genID
-
 import pandas as pd
 
 

@@ -1,9 +1,8 @@
 from DataConversions.SupabaseInterface import SupabaseInterface as db, genID
-
 import pandas as pd
 
-from ETL_AenC1 import ComposedateTable as ac1Dates
-from ETL_AdventureWorks import ComposedateTable as adwDates
+from DataConversions.ETL_AenC1 import ComposedateTable as ac1Dates
+from DataConversions.ETL_AdventureWorks import ComposedateTable as adwDates
 
 base = db()
 

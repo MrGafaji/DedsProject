@@ -2,7 +2,6 @@ import pandas as pd
 import pyodbc
 import numpy as np
 from DataConversions.SupabaseInterface import SupabaseInterface as db, genID
-
 # from DBConnectie import DBConn
 
 # employee = DBConn.toDf(DBConn.employeeSUP)
