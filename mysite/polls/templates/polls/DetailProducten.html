@@ -17,11 +17,11 @@
             <div class="column1" style="display: inline-block; width: 49%;">
             </div>
         </div>
-        <h1>machine learing</h1>
-        <h1>Random Forest:</h1>
+        <h2 class="white">machine learing</h2>
+        <p class="white">Decision Tree:</p>
         <div id="sales-bar-chart"></div>
-        <h1 id="accuracy"></h1>
-        <h1>K-Means Clustering:</h1>
+        <p id="accuracy" class="white"></p>
+        <p class="white">K-Means Clustering:</p>
         <div id="clustering-chart"></div>
         <div id="sales-bar-chart2" style="display: inline-block; width: 49%;"></div>
         <div id="sales-bar-chart3" style="display: inline-block; width: 49%;"></div>
@@ -94,75 +94,66 @@
                     console.error(error); a
                 });
 
-
             fetch('/cluster')
                 .then(response => response.json())
                 .then(data => {
                     var labels = data.labels;
                     var centers = data.centers;
-                    fetch('/cluster')
-                        .then(response => response.json())
-                        .then(data => {
-                            var labels = data.labels;
-                            var centers = data.centers;
-                            var dataPoints = data.dataPoints;
+                    var dataPoints = data.dataPoints;
+                    console.log(data);
+                    console.log(dataPoints);
 
-                            var xData = dataPoints.map(item => item.Order_Quantity);
-                            var yData = dataPoints.map(item => item.Profit);
+                    var xData = dataPoints.map(item => item.month);
+                    var yData = dataPoints.map(item => item.Region);
 
-                            var trace = {
-                                x: xData,
-                                y: yData,
-                                mode: 'markers',
-                                marker: {
-                                    color: labels,
-                                    size: 10,
-                                    colorscale: 'Viridis',
-                                    line: {
-                                        color: 'black',
-                                        width: 0.5
-                                    }
-                                },
-                                type: 'scatter'
-                            };
+                    var trace = {
+                        x: xData,
+                        y: yData,
+                        mode: 'markers',
+                        marker: {
+                            color: labels,
+                            size: 10,
+                            colorscale: 'Viridis',
+                            line: {
+                                color: 'black',
+                                width: 0.5
+                            }
+                        },
+                        type: 'scatter'
+                    };
 
-                            var layout = {
-                                title: {
-                                    text: 'K-Means Clustering',
-                                    font: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                plot_bgcolor: '#212121',
-                                paper_bgcolor: '#212121',
-                                xaxis: {
-                                    title: 'Order Quantity',
-                                    color: '#ffffff',
-                                    tickfont: {
-                                        color: '#ffffff'
-                                    }
-                                },
-                                yaxis: {
-                                    title: 'Profit',
-                                    color: '#ffffff',
-                                    tickfont: {
-                                        color: '#ffffff'
-                                    }
-                                }
-                            };
+                    var layout = {
+                        title: {
+                            text: 'K-Means Clustering',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        xaxis: {
+                            title: 'Maand',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        yaxis: {
+                            title: 'Region',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        }
+                    };
 
-                            Plotly.newPlot('clustering-chart', [trace], layout);
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
+                    Plotly.newPlot('clustering-chart', [trace], layout);
                 })
                 .catch(error => {
                     console.error(error);
                 });
 
-
-                fetch('/getBestSoldProductInProductCategory')
+            fetch('/getBestSoldProductInProductCategory')
                 .then(response => response.json())
                 .then(data => {
                     var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
@@ -203,128 +194,134 @@
                     console.error(error);
                 });
 
-                fetch('/getBestSoldProductInProductCategoryBike')
-    .then(response => response.json())
-    .then(data => {
-        var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
-        Plotly.newPlot('sales-bar-chart3', [{
-            x: best_sold_product_in_product_category.map(item => `${item.Sub_Category} - ${item.Product}`),
-            y: best_sold_product_in_product_category.map(item => item.Order_Quantity),
-            type: 'bar',
-            marker: {
-                color: '#e377c2'
-            },
-            title: 'BikeStore best verkochte producten per product categorie',
-        }], {
-            title: {
-                text: 'BikeStore best verkochte producten per product categorie',
-                font: {
-                    color: '#ffffff'
-                }
-            },
-            plot_bgcolor: '#212121',
-            paper_bgcolor: '#212121',
-            yaxis: {
-                title: 'Hoeveelheid verkochte producten',
-                color: '#ffffff',
-                tickfont: {
-                    color: '#ffffff'
-                }
-            },
-            xaxis: {
-                title: 'Product categorie',
-                color: '#ffffff',
-                tickfont: {
-                    color: '#ffffff'
-                },
-            }
-        });
-    })
-    .catch(error => {
-        console.error(error);
-    });
+            fetch('/getBestSoldProductInProductCategoryBike')
+                .then(response => response.json())
+                .then(data => {
+                    var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
+                    Plotly.newPlot('sales-bar-chart3', [{
+                        x: best_sold_product_in_product_category.map(item => `${item.Sub_Category} - ${item.Product}`),
+                        y: best_sold_product_in_product_category.map(item => item.Order_Quantity),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'BikeStore best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'BikeStore best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
 
-    fetch('/getMostSoldProducts')
-    .then(response => response.json())
-    .then(data => {
-        var most_sold_products = data.most_sold_products;
-        Plotly.newPlot('sales-bar-chart4', [{
-            x: most_sold_products.map(item => item.Name),
-            y: most_sold_products.map(item => item.total_sales_quantity),
-            type: 'bar',
-            marker: {
-                color: '#e377c2'
-            },
-            title: 'AdventureWorks best verkochte producten per product categorie',
-        }], {
-            title: {
-                text: 'AdventureWorks best verkochte producten per product categorie',
-                font: {
-                    color: '#ffffff'
-                }
-            },
-            plot_bgcolor: '#212121',
-            paper_bgcolor: '#212121',
-            yaxis: {
-                title: 'Hoeveelheid verkochte producten',
-                color: '#ffffff',
-                tickfont: {
-                    color: '#ffffff'
-                }
-            },
-            xaxis: {
-                title: 'Product categorie',
-                color: '#ffffff',
-                tickfont: {
-                    color: '#ffffff'
-                },
-            }
-        });
-    })
-    .catch(error => {
-        console.error(error);
-    });
-    
-    fetch('/getBestSoldProductInProductCategoryAdventure')
-    .then(response => response.json())
-    .then(data => {
-        var best_sold_product_in_product_category = data.most_sold_products_per_product_category;
-        Plotly.newPlot('sales-bar-chart5', [{
-            x: best_sold_product_in_product_category.map(item => item.CategoryName),
-            y: best_sold_product_in_product_category.map(item => item.total_sales_quantity),
-            type: 'bar',
-            marker: {
-                color: '#e377c2'
-            },
-            title: 'Northwind best verkochte producten per product categorie',
-        }], {
-            title: {
-                text: 'Northwind best verkochte producten per product categorie',
-                font: {
-                    color: '#ffffff'
-                }
-            },
-            plot_bgcolor: '#212121',
-            paper_bgcolor: '#212121',
-            yaxis: {
-                title: 'Hoeveelheid verkochte producten',
-                color: '#ffffff',
-                tickfont: {
-                    color: '#ffffff'
-                }
-            },
-            xaxis: {
-                title: 'Product categorie',
-                color: '#ffffff',
-                tickfont: {
-                    color: '#ffffff'
-                },
-            }
-        });
-    })
+            fetch('/getMostSoldProducts')
+                .then(response => response.json())
+                .then(data => {
+                    var most_sold_products = data.most_sold_products;
+                    Plotly.newPlot('sales-bar-chart4', [{
+                        x: most_sold_products.map(item => item.Name),
+                        y: most_sold_products.map(item => item.total_sales_quantity),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'AdventureWorks best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'AdventureWorks best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
 
-}
+            fetch('/getBestSoldProductInProductCategoryAdventure')
+                .then(response => response.json())
+                .then(data => {
+                    var best_sold_product_in_product_category = data.most_sold_products_per_product_category;
+                    Plotly.newPlot('sales-bar-chart5', [{
+                        x: best_sold_product_in_product_category.map(item => item.CategoryName),
+                        y: best_sold_product_in_product_category.map(item => item.total_sales_quantity),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'Northwind best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'Northwind best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+
+        }
 
     </script>
+    <style>
+        .white {
+            color: rgb(245, 245, 245);
+        }
+    </style>
 </body>
+
 </html>
