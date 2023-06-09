@@ -1,7 +1,7 @@
-import ETL_AenC1
-import ETL_AenC2
-import ETL_AdventureWorks
-import ETL_BideStore
+import DataConversions.ETL_AenC1 as ETL_AenC1
+import DataConversions.ETL_AenC2 as ETL_AenC2
+import DataConversions.ETL_AdventureWorks as ETL_AdventureWorks
+import DataConversions.ETL_BideStore as ETL_BideStore
 import pandas as pd
 from DataConversions.SupabaseInterface import SupabaseInterface as db, genID
 
