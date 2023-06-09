@@ -1,17 +1,327 @@
+<!DOCTYPE html>
+<html>
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 
-<form action="{% url 'polls:statistieken' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <p>Producten</p>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    </fieldset>
-    <input type="submit" value="haal statistieken op">
-    </form>
+<head>
+    <title>Product data</title>
+    <h1>Product data</h1>
+    <a href="/" id="Home button" onmouseover="this.style.color='#A9A9A9'" onmouseleave="this.style.color='#FFFFFF'" style="background-color: gray;">Home</a>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+
+<body>
+    <div>
+        <div class="row">
+            <div class="column1" style="display: inline-block; width: 49%;">
+            </div>
+        </div>
+        <h2 class="white">machine learing</h2>
+        <p class="white">Decision Tree:</p>
+        <div id="sales-bar-chart"></div>
+        <p id="accuracy" class="white"></p>
+        <p class="white">K-Means Clustering:</p>
+        <div id="clustering-chart"></div>
+        <div id="sales-bar-chart2" style="display: inline-block; width: 49%;"></div>
+        <div id="sales-bar-chart3" style="display: inline-block; width: 49%;"></div>
+        <div id="sales-bar-chart4" style="display: inline-block; width: 49%;"></div>
+        <div id="sales-bar-chart5" style="display: inline-block; width: 49%;"></div>
+    </div>
+    <script>
+        updateCharts();
+
+        setInterval(updateCharts, 300000);
+
+        function updateCharts() {
+            fetch('/predict_bonus', {
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var accuracy = document.getElementById("accuracy");
+                    var output = document.getElementById("output");
+                    accuracy.innerHTML = "Accuracy: " + data.accuracy;
+
+                    var ageGroups = data.Age_Group.map(function (ageGroup) {
+                        if (ageGroup === 0) {
+                            return "<25";
+                        } else if (ageGroup === 1) {
+                            return "25-34";
+                        } else if (ageGroup === 2) {
+                            return "35-64";
+                        } else if (ageGroup === 3) {
+                            return "64+";
+                        } else {
+                            return "Unknown";
+                        }
+                    });
+
+                    var predictedProfits = data.Average_Profit;
+
+                    console.log(data.accuracy);
+                    console.log(ageGroups);
+                    console.log(predictedProfits);
+
+                    var plotData = [{
+                        x: ageGroups,
+                        y: predictedProfits,
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        }
+                    }];
+
+                    var layout = {
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        font: {
+                            color: 'white'
+                        },
+                        xaxis: {
+                            title: 'Age Group'
+                        },
+                        yaxis: {
+                            title: 'Average Profit'
+                        }
+                    };
+
+                    output = Plotly.newPlot('sales-bar-chart', plotData, layout);
+                })
+                .catch(error => {
+                    console.error(error); a
+                });
+
+            fetch('/cluster')
+                .then(response => response.json())
+                .then(data => {
+                    var labels = data.labels;
+                    var centers = data.centers;
+                    var dataPoints = data.dataPoints;
+                    console.log(data);
+                    console.log(dataPoints);
+
+                    var xData = dataPoints.map(item => item.month);
+                    var yData = dataPoints.map(item => item.Region);
+
+                    var trace = {
+                        x: xData,
+                        y: yData,
+                        mode: 'markers',
+                        marker: {
+                            color: labels,
+                            size: 10,
+                            colorscale: 'Viridis',
+                            line: {
+                                color: 'black',
+                                width: 0.5
+                            }
+                        },
+                        type: 'scatter'
+                    };
+
+                    var layout = {
+                        title: {
+                            text: 'K-Means Clustering',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        xaxis: {
+                            title: 'Maand',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        yaxis: {
+                            title: 'Region',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        }
+                    };
+
+                    Plotly.newPlot('clustering-chart', [trace], layout);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            fetch('/getBestSoldProductInProductCategory')
+                .then(response => response.json())
+                .then(data => {
+                    var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
+                    Plotly.newPlot('sales-bar-chart2', [{
+                        x: best_sold_product_in_product_category.map(item => `${item.Category} - ${item.name}`),
+                        y: best_sold_product_in_product_category.map(item => item.total_product_sales),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'AenC best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'AenC best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            fetch('/getBestSoldProductInProductCategoryBike')
+                .then(response => response.json())
+                .then(data => {
+                    var best_sold_product_in_product_category = data.best_sold_product_in_product_category;
+                    Plotly.newPlot('sales-bar-chart3', [{
+                        x: best_sold_product_in_product_category.map(item => `${item.Sub_Category} - ${item.Product}`),
+                        y: best_sold_product_in_product_category.map(item => item.Order_Quantity),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'BikeStore best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'BikeStore best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            fetch('/getMostSoldProducts')
+                .then(response => response.json())
+                .then(data => {
+                    var most_sold_products = data.most_sold_products;
+                    Plotly.newPlot('sales-bar-chart4', [{
+                        x: most_sold_products.map(item => item.Name),
+                        y: most_sold_products.map(item => item.total_sales_quantity),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'AdventureWorks best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'AdventureWorks best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            fetch('/getBestSoldProductInProductCategoryAdventure')
+                .then(response => response.json())
+                .then(data => {
+                    var best_sold_product_in_product_category = data.most_sold_products_per_product_category;
+                    Plotly.newPlot('sales-bar-chart5', [{
+                        x: best_sold_product_in_product_category.map(item => item.CategoryName),
+                        y: best_sold_product_in_product_category.map(item => item.total_sales_quantity),
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                        title: 'Northwind best verkochte producten per product categorie',
+                    }], {
+                        title: {
+                            text: 'Northwind best verkochte producten per product categorie',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Hoeveelheid verkochte producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Product categorie',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+
+        }
+
+    </script>
+    <style>
+        .white {
+            color: rgb(245, 245, 245);
+        }
+    </style>
+</body>
+
+</html>

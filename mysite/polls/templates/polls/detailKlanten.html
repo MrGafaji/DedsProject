@@ -1,16 +1,149 @@
+<!DOCTYPE html>
+<html>
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-<form action="{% url 'polls:statistieken' question.id %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <p>klanten</p>
-        <legend><h1>{{ question.question_text }}</h1></legend>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        {% for choice in question.choice_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-        {% endfor %}
-    </fieldset>
-    <input type="submit" value="haal statistieken op">
-    </form>
+
+<head>
+    <title>Klant data</title>
+    <h1>Klant data</h1>
+    <a href="/" id="Home button" onmouseover="this.style.color='#A9A9A9'" onmouseleave="this.style.color='#FFFFFF'" style="background-color: gray;">Home</a>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="row">
+            <div class="column1" style="display: inline-block; margin-right: 50rem; width: 49%;">
+                <label for="ageGroup1" style="color: white;">Age Group:</label>
+                <select id="ageGroup1" onchange="fetchProductPerCustomerGroup()"></select>
+            </div>
+            <div class="column1" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart"></div>
+            </div>
+            <div class="column2" style="display: inline-block; width: 49%;">
+                <div id="sales-bar-chart2"></div>
+            </div>
+            <div class="column1" style="display: inline-block; width: 100%;">
+                <div id="sales-bar-chart3"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        updateCharts();
+        setInterval(updateCharts, 300000);
+
+        function updateCharts() {
+            fetch('/getAgeGroups')
+                .then(response => response.json())
+                .then(data => {
+                    var ageGroups = data.age_groups;
+                    var select = document.getElementById("ageGroup1");
+                    select.innerHTML = "";
+                    for (var i = 0; i < ageGroups.length; i++) {
+                        var opt = ageGroups[i];
+                        var el = document.createElement("option");
+                        el.textContent = opt;
+                        el.value = opt;
+                        select.appendChild(el);
+                    }
+                    fetchProductPerCustomerGroup();
+                });
+        }
+
+        function fetchProductPerCustomerGroup() {
+            var ageGroup = document.getElementById("ageGroup1").value;
+            getProductPerCustomerGroup(ageGroup);
+        }
+
+        function getProductPerCustomerGroup(ageGroup) {
+            fetch(`/getproductpercustomergroup/${ageGroup}/`)
+                .then(response => response.json())
+                .then(data => {
+                    var product_per_customergroup = data.product_per_customergroup;
+
+                    var xValues = product_per_customergroup.map(item => item.Product);
+                    var yValues = product_per_customergroup.map(item => item.Order_Quantity);
+
+                    Plotly.newPlot('sales-bar-chart', [{
+                        x: xValues,
+                        y: yValues,
+                        type: 'bar',
+                        marker: {
+                            color: '#e377c2'
+                        },
+                    }], {
+                        title: {
+                            text: 'Producten per klantgroep',
+                            font: {
+                                color: '#ffffff'
+                            }
+                        },
+                        plot_bgcolor: '#212121',
+                        paper_bgcolor: '#212121',
+                        yaxis: {
+                            title: 'Aantal Verkocht',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            }
+                        },
+                        xaxis: {
+                            title: 'Producten',
+                            color: '#ffffff',
+                            tickfont: {
+                                color: '#ffffff'
+                            },
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        fetch('/getmostprofitpercustomergroup')
+            .then(response => response.json())
+            .then(data => {
+                var most_profit_per_customergroup = data.most_profit_per_customergroup;
+
+                var xValues = most_profit_per_customergroup.map(item => item.Age_Group);
+                var yValues = most_profit_per_customergroup.map(item => item.Profit);
+
+                Plotly.newPlot('sales-bar-chart2', [{
+                    x: xValues,
+                    y: yValues,
+                    type: 'bar',
+                    marker: {
+                        color: '#e377c2'
+                    },
+                }], {
+                    title: {
+                        text: 'Meeste winst per klantgroep',
+                        font: {
+                            color: '#ffffff'
+                        }
+                    },
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    yaxis: {
+                        title: 'Winst',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    xaxis: {
+                        title: 'Klantgroep',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        },
+                    }
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
+</html>

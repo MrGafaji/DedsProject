@@ -3,13 +3,13 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
-from .DBConnectie import DBConn
 from django.http import JsonResponse
+from .DBConnectie import DBConn
 
 
 def predict_bonus(request):
     df = DBConn.toDf(DBConn.salesSUP)
-    data = df
+    data = df.copy()
 
     features = ['Customer_Age', 'Age_Group', 'Customer_Gender', 'Country', 'State', 'Product_Category', 'Sub_Category', 'Product', 'Order_Quantity', 'Unit_Cost', 'Unit_Price']
 
@@ -31,6 +31,6 @@ def predict_bonus(request):
 
     avg_profit_per_age_group = results_df.groupby('Age_Group')['Profit'].mean()
 
-    chart_data = {'Age_Group': avg_profit_per_age_group.index.tolist(), 'Average_Profit': avg_profit_per_age_group.tolist()}
-    print(chart_data)
-    return JsonResponse(chart_data, safe=False)
+    chart_data = {'Age_Group': avg_profit_per_age_group.index.tolist(), 'Average_Profit': avg_profit_per_age_group.tolist(), 'accuracy': metrics.accuracy_score(y_test, y_pred)}
+    DBConn.supabase.auth.sign_out()
+    return JsonResponse(chart_data)

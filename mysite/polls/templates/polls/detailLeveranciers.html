@@ -6,8 +6,7 @@
 <head>
     <title>Leverancier data</title>
     <h1>Leverancier data</h1>
-    <a href="/" id="Home button" onmouseover="this.style.color='#A9A9A9'" onmouseleave="this.style.color='#FFFFFF'"
-        style="background-color: gray;">Home</a>
+    <a href="/" id="Home button" onmouseover="this.style.color='#A9A9A9'" onmouseleave="this.style.color='#FFFFFF'" style="background-color: gray;">Home</a>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
@@ -15,27 +14,23 @@
     <div>
         <div class="row">
             <div class="column1" style="display: inline-block; width: 49%;">
-                <div id="sales-bar-chart"></div>
+
+              <div id="sales-bar-chart"></div>
             </div>
             <div class="column2" style="display: inline-block; width: 49%;">
-                <div id="sales-bar-chart2"></div>
+              <div id="sales-bar-chart2"></div>
             </div>
             <div class="column1" style="display: inline-block; width: 100%;">
-                <div id="sales-bar-chart3"></div>
+              <div id="sales-bar-chart3"></div>
             </div>
-            <!-- <div id="itemset"></div> -->
-            <div id="itemset-graph"></div>
-            <p id="itemsets"></p>
         </div>
-
-        <div>
-            <p id="supports"></p>
-        </div>
-
-        <div id="chart"></div>
-    </div>
     </div>
     <script>
+      updateCharts();
+      
+      setInterval(updateCharts, 300000);
+      
+      function updateCharts() {
         fetch('/perform_frequentitemset')
             .then(response => response.json())
             .then(data => {
@@ -78,5 +73,87 @@
                 // Handle any errors
                 console.error(error);
             });
+        fetch('/getQtySoldProductsPerSupplier')
+        .then(response => response.json())
+        .then(data => {
+          var qty_sold_products_per_suplier = data.qty_sold_products_per_supplier;
+          Plotly.react('sales-bar-chart', [{
+            x: qty_sold_products_per_suplier.map(item => item.Name),
+            y: qty_sold_products_per_suplier.map(item => item.total_sales_quantity),
+            type: 'bar',
+            marker: {
+              color: '#e377c2'
+            },
+            title: 'Totale hoeveelheid verkochte producten per leverancier',
+          }], {
+            title: {
+              text: 'Totale hoeveelheid verkochte producten per leverancier',
+              font: {
+                color: '#ffffff'
+              }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+              title: 'Hoeveelheid verkochte producten',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            },
+            xaxis: {
+              title: 'Leverancier',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        
+        fetch('/getAmountMoneyPerSupplier')
+        .then(response => response.json())
+        .then(data => {
+          var amount_money_per_supplier = data.amount_money_per_supplier;
+          Plotly.react('sales-bar-chart2', [{
+            x: amount_money_per_supplier.map(item => item.Name),
+            y: amount_money_per_supplier.map(item => item.total_amount_money),
+            type: 'bar',
+            marker: {
+              color: '#e377c2'
+            },
+            title: 'Totaal betaald per leverancier',
+          }], {
+            title: {
+              text: 'Totaal betaald per leverancier',
+              font: {
+                color: '#ffffff'
+              }
+            },
+            plot_bgcolor: '#212121',
+            paper_bgcolor: '#212121',
+            yaxis: {
+              title: 'Betaald bedrag',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            },
+            xaxis: {
+              title: 'Leverancier',
+              color: '#ffffff',
+              tickfont: {
+                color: '#ffffff'
+              }
+            }
+          });
+        })
+
+        
+      }
+
     </script>
 </body>
