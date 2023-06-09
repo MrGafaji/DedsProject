@@ -1,7 +1,7 @@
 import pandas as pd
 import pyodbc
 import numpy as np
-from DBConnectie import DBConn
+from DataConversions.DBConnectie import DBConn
 
 ### BikeStore
 def GetSalesTable():

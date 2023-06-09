@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn import preprocessing
-from .DBConnectie import DBConn
+from DataConversions.DBConnectie import DBConn
 from django.http import JsonResponse
 
 def get_cluster(request):

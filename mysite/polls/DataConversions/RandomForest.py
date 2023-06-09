@@ -4,7 +4,7 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from django.http import JsonResponse
-from .DBConnectie import DBConn
+from DataConversions.DBConnectie import DBConn
 
 
 def predict_bonus(request):

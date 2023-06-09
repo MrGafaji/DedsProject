@@ -2,7 +2,7 @@ from mlxtend.frequent_patterns import apriori
 from mlxtend.preprocessing import TransactionEncoder
 import pandas as pd
 from django.http import JsonResponse
-from .SupabaseInterface import SupabaseInterface as db, genID
+from DataConversions.SupabaseInterface import SupabaseInterface as db, genID
 
 base = db()
 

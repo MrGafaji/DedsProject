@@ -1,6 +1,6 @@
 import pandas as pd
 from django.http import JsonResponse
-from .DBConnectie import DBConn
+from DataConversions.DBConnectie import DBConn
 
 productVendor = DBConn.toDf(DBConn.productVendorSUP)
 Vendor = DBConn.toDf(DBConn.vendorSUP)

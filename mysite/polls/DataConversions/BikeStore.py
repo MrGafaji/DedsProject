@@ -1,7 +1,7 @@
 import pandas as pd
 from django.http import JsonResponse
 import urllib.parse
-from .DBConnectie import DBConn
+from DataConversions.DBConnectie import DBConn
 
 BikeStore = DBConn.toDf(DBConn.salesSUP)
 
