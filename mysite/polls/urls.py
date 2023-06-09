@@ -6,6 +6,8 @@ from polls.DataConversions import BikeStore as Bike
 from polls.DataConversions import RandomForest as RandomForest
 from polls.DataConversions import Clustering as Clustering
 from polls.DataConversions import updateScript as Update
+from polls.DataConversions import Regression as Reg
+from polls.DataConversions import FrequentItem as FItem
 
 app_name = "polls"
 urlpatterns = [
@@ -22,8 +24,8 @@ urlpatterns = [
     path('getBestSoldProductInProductCategory/', Sales.get_best_sold_product_in_product_category, name='getBestSoldProductInProductCategory'),
     path('getDepartments/', Sales.get_Departmens, name='getDepartments'),
     path('getSalaryPerEmployeePerDepartment/<str:department>/', Sales.get_Salary_Per_Employee_Per_Department, name='getSalaryPerEmployeePerDepartment'),
-    path('perform_regression/', Regression.perform_regression, name='perform_regression'),
-    path('perform_frequentitemset/', FrequentItem.perform_frequentitemset, name='perform_frequentitemset'),
+    path('perform_regression/', Reg.perform_regression, name='perform_regression'),
+    path('perform_frequentitemset/', FItem.perform_frequentitemset, name='perform_frequentitemset'),
 
 
     ##klant

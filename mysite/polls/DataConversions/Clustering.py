@@ -24,7 +24,7 @@ def get_cluster(request):
 
     X = pd.DataFrame(scaled_features, columns=features)
 
-    print(X)
+    #print(X)
 
     kmeans = KMeans(n_clusters=3)
     kmeans.fit(X)
