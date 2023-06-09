@@ -3,7 +3,6 @@ import pyodbc
 import numpy as np
 from DataConversions.SupabaseInterface import SupabaseInterface as db, genID
 
-
 base = db()
 
 

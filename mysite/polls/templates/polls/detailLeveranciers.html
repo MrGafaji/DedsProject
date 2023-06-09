@@ -14,6 +14,7 @@
     <div>
         <div class="row">
             <div class="column1" style="display: inline-block; width: 49%;">
+
               <div id="sales-bar-chart"></div>
             </div>
             <div class="column2" style="display: inline-block; width: 49%;">
@@ -30,6 +31,48 @@
       setInterval(updateCharts, 300000);
       
       function updateCharts() {
+        fetch('/perform_frequentitemset')
+            .then(response => response.json())
+            .then(data => {
+                // Create a bar chart using Plotly
+                var chartData = [{
+                    x: data.itemsets,
+                    y: data.supports,
+                    type: 'bar',
+                    marker: {
+                        color: '#e377c2'
+                    } 
+                }];
+
+                var layout = {
+                    title: 'Frequent Itemsets',
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    font: {
+                        color: '#ffffff'
+                    },
+                    xaxis: {
+                        tickangle: 90,
+                        color: '#ffffff'
+                    },
+                    yaxis: {
+                        title: 'Support',
+                        color: '#ffffff'
+                    },
+                    margin: {
+                        l: 80,
+                        r: 20,
+                        t: 40,
+                        b: 220
+                    }
+                };
+
+                Plotly.newPlot('chart', chartData, layout);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
         fetch('/getQtySoldProductsPerSupplier')
         .then(response => response.json())
         .then(data => {
