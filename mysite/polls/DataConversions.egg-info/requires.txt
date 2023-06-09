@@ -61,7 +61,6 @@ scikit-learn
 scipy
 semver
 six
-sklearn
 smmap
 sniffio
 sqlparse
