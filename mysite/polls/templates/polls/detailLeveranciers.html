@@ -36,46 +36,6 @@
     </div>
     </div>
     <script>
-        // fetch('/perform_frequentitemset')
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // Process the returned JSON data
-        //         console.log(data);
-
-        //         // Create a horizontal bar chart using Plotly
-        //         var chartData = [{
-        //             y: data.itemsets,
-        //             x: data.supports,
-        //             type: 'bar',
-        //             orientation: 'h',
-        //         }];
-
-        //         var layout = {
-        //             title: 'Frequent Itemsets',
-        //             plot_bgcolor: '#212121',
-        //             paper_bgcolor: '#212121',
-        //             font: {
-        //                 color: '#ffffff'
-        //             },
-        //             xaxis: {
-        //                 title: 'Support',
-        //                 color: '#ffffff'
-        //             },
-        //             yaxis: {
-        //                 tickangle: -360,
-        //                 dtick: 2,  // Increase the dtick value to increase the gap between each frozen set
-        //                 color: '#ffffff'
-        //             },
-        //             margin: {
-        //                 l: 220,
-        //                 r: 20,
-        //                 t: 40,
-        //                 b: 40
-        //             }
-        //         };
-
-        //         Plotly.newPlot('chart', chartData, layout);
-        //     })
         fetch('/perform_frequentitemset')
             .then(response => response.json())
             .then(data => {

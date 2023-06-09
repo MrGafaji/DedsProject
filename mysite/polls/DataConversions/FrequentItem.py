@@ -1,27 +1,9 @@
-# from .DBConnectie import DBConn
-# import pandas as pd
-# from mlxtend.frequent_patterns import fpgrowth
-# from mlxtend.frequent_patterns import apriori
-# from mlxtend.preprocessing import TransactionEncoder
-# from django.http import JsonResponse
-# import matplotlib.pyplot as plt
-# import seaborn as sns
-# import json
-
-# def perform_frequentitemset(request):
-# #     productVendor = DBConn.toDf(DBConn.productVendor)
-# #     vendor = DBConn.toDf(DBConn.vendor)
-
-#     merged_data = pd.merge(productVendor, vendor, on='BusinessEntityID')
-    # transactions = merged_data.groupby('BusinessEntityID')['ProductID'].apply(list).tolist()
 from .DBConnectie import DBConn
 from mlxtend.frequent_patterns import apriori
 from mlxtend.preprocessing import TransactionEncoder
 import pandas as pd
 from django.http import JsonResponse
-import matplotlib.pyplot as plt
-import io
-import base64
+
 
 # Assuming you have the data in a DataFrame called 'productVendor'
 # with columns 'ProductId' and 'BusinessEntityID'
@@ -44,9 +26,8 @@ def perform_frequentitemset(request):
     frequent_itemsets = frequent_itemsets[frequent_itemsets['length'] > 1]
     
     print(frequent_itemsets)
-# Convert the frequent itemsets DataFrame to JSON
-    # frequent_itemsets_json = frequent_itemsets.to_json(orient='records')
-    # Extract the support values and itemsets
+
+    # Convert the frequent itemsets DataFrame to JSON
     supports = frequent_itemsets['support']
     itemsets = frequent_itemsets['itemsets'].astype(str)
 
