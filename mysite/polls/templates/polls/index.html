@@ -67,7 +67,7 @@ button {
 
     <img src="{% static 'images/logoImglight.png' %}" alt="logo" class="logo">
     {% for question in latest_question_list %}
-    <a href="{% url 'polls:detail' question.id %}" class="">{{ question.question_text }}</a>
+    <a href="{% url 'polls:detail' question.id %}statistieken" class="">{{ question.question_text }}</a>
     {% endfor %}
 
     </ul>
