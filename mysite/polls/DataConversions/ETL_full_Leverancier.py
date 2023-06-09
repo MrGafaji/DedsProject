@@ -20,8 +20,8 @@ def ETL():
             'name'      : rowDict['name'],
         }
 
-        base.InsertIntoTable('F_Vendor', newDict)
-        print(newDict)
+        base.AddIfNotAlreadyInDBForOtherTables('F_Vendor', newDict, ['id', 'name'])
+        # print(newDict)
 
 
 

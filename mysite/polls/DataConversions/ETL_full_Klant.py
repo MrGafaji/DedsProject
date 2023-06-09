@@ -21,14 +21,14 @@ def ETL():
     for _, row in customers.iterrows():
         rowDict = row.to_dict()
         newDict = {
-            'id'   : idgen.id(),
+            'id'            : idgen.id(),
             'age'           : rowDict['age'],
             'age_group'     : rowDict['age_group'],
             'gender'        : rowDict['gender'],
             'count'         : rowDict['count']
         }
 
-        base.InsertIntoTable('F_Klant', newDict)
+        base.AddIfNotAlreadyInDBForOtherTables('F_Klant', newDict, ['age', 'gender'])
 
 
 
