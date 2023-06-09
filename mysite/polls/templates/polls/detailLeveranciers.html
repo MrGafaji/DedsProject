@@ -9,7 +9,6 @@
     <a href="/" id="Home button" onmouseover="this.style.color='#A9A9A9'" onmouseleave="this.style.color='#FFFFFF'"
         style="background-color: gray;">Home</a>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/seaborn-colorblind@0.0.1/seaborn-colorblind.min.js"></script> -->
 </head>
 
 <body>
@@ -24,74 +23,96 @@
             <div class="column1" style="display: inline-block; width: 100%;">
                 <div id="sales-bar-chart3"></div>
             </div>
-            <div id="itemset"></div>
+            <!-- <div id="itemset"></div> -->
             <div id="itemset-graph"></div>
+            <p id="itemsets"></p>
         </div>
+
+        <div>
+            <p id="supports"></p>
+        </div>
+
+        <div id="chart"></div>
+    </div>
     </div>
     <script>
+        // fetch('/perform_frequentitemset')
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // Process the returned JSON data
+        //         console.log(data);
+
+        //         // Create a horizontal bar chart using Plotly
+        //         var chartData = [{
+        //             y: data.itemsets,
+        //             x: data.supports,
+        //             type: 'bar',
+        //             orientation: 'h',
+        //         }];
+
+        //         var layout = {
+        //             title: 'Frequent Itemsets',
+        //             plot_bgcolor: '#212121',
+        //             paper_bgcolor: '#212121',
+        //             font: {
+        //                 color: '#ffffff'
+        //             },
+        //             xaxis: {
+        //                 title: 'Support',
+        //                 color: '#ffffff'
+        //             },
+        //             yaxis: {
+        //                 tickangle: -360,
+        //                 dtick: 2,  // Increase the dtick value to increase the gap between each frozen set
+        //                 color: '#ffffff'
+        //             },
+        //             margin: {
+        //                 l: 220,
+        //                 r: 20,
+        //                 t: 40,
+        //                 b: 40
+        //             }
+        //         };
+
+        //         Plotly.newPlot('chart', chartData, layout);
+        //     })
         fetch('/perform_frequentitemset')
-            .then(response =>
-                response.json())
+            .then(response => response.json())
             .then(data => {
-                // Handle the fetched data here
-                var itemsetElement = document.getElementById("itemset");
-
-                // Loop through the frequent itemsets and display them
-                data.forEach(itemset => {
-                    var itemsetString = Object.values(itemset).join(", ");
-                    var itemsetParagraph = document.createElement("p");
-                    itemsetParagraph.innerHTML = itemsetString;
-                    itemsetElement.appendChild(itemsetParagraph);
-                });
-
-                // Extract the itemsets and their support values from the data
-                var itemsets = data.map(itemset => itemset.itemsets);
-                var supports = data.map(itemset => itemset.support);
-
-                // Create the plot using Seaborn
-                var itemsetGraphElement = document.getElementById("itemset-graph");
-                var itemsetData = [{
-                    x: itemsets,
-                    y: supports,
-                    type: 'bar',
-                    marker: {
-                        color: 'steelblue',
-                        line: {
-                            color: 'black',
-                            width: 1
-                        }
-                    },
-                    opacity: 0.6
+                // Create a bar chart using Plotly
+                var chartData = [{
+                    x: data.itemsets,
+                    y: data.supports,
+                    type: 'bar'
                 }];
-                var itemsetLayout = {
-                    title: {
-                        text: 'Frequent Itemsets',
-                        font: {
-                            color: '#ffffff'
-                        }
+
+                var layout = {
+                    title: 'Frequent Itemsets',
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    font: {
+                        color: '#ffffff'
                     },
                     xaxis: {
-                        title: 'Itemsets',
-                        tickangle: 45,
-                        color: '#ffffff',
-                        tickfont: {
-                            color: '#ffffff'
-                        }
+                        tickangle: 90,
+                        color: '#ffffff'
                     },
                     yaxis: {
                         title: 'Support',
-                        color: '#ffffff',
-                        tickfont: {
-                            color: '#ffffff'
-                        }
+                        color: '#ffffff'
                     },
-                    bargap: 0.5,
-                    plot_bgcolor: '#212121',
-                    paper_bgcolor: '#212121'
+                    margin: {
+                        l: 80,
+                        r: 20,
+                        t: 40,
+                        b: 220
+                    }
                 };
-                Plotly.newPlot(itemsetGraphElement, itemsetData, itemsetLayout);
+
+                Plotly.newPlot('chart', chartData, layout);
             })
             .catch(error => {
+                // Handle any errors
                 console.error(error);
             });
     </script>
