@@ -6,7 +6,7 @@ import datetime as dt
 
 
     # VerkochtProduct = TODO
-def mergeorderlines():
+def ETL_Fact():
     base = db()
     idgen = genID()
 
@@ -146,20 +146,7 @@ def mergeorderlines():
         if type(newRow["Vendor_Id"]) == float:
             newRow['Vendor_Id'] = int(newRow['Vendor_Id'])
         
-        base.AddIfNotAlreadyInDB('F_Order_Fact', newRow)
-        
-    
-
-
-
-
-
-
-
-
-
-
+        base.AddIfNotAlreadyInDBForFactTable('F_Order_Fact', newRow)
 
 if __name__ == '__main__':
-    # data = ETL()
-    mergeorderlines()
+    ETL_Fact()

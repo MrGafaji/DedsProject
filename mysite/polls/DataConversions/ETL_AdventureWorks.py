@@ -7,16 +7,20 @@ base = db()
 
 
 ### AdventureWorks
-def ComposeLeverancierTable(Leveranciers):
+def ComposeLeverancierTable():
+    Leveranciers = base.GetFullTable('Vendor')
     Leveranciers = Leveranciers[['BusinessEntityID', 'Name']]
     Leveranciers['BusinessEntityID'] = Leveranciers['BusinessEntityID'].astype('int64')
 
     return Leveranciers
 
-def ComposeProductTable(Product):
+def ComposeProductTable():
+    Product = base.GetFullTable('Product1')
+    print(Product)
+    print(Product.info())
     '''Composes the Product Table according to the ETL.'''
-    Product = Product[['ProductID','Name']]
-    Product = Product.rename(columns={"ProductID": 'id', 'Name': 'name'})
+    Product = Product[['ProductID','ProductName']]
+    Product = Product.rename(columns={"ProductID": 'id', 'ProductName': 'name'})
     
     return Product
 
@@ -36,12 +40,12 @@ def ComposedateTable():
     return date
 
 
-def ComposeSoldProductProductTable(SalesOrderHeader, SalesOrderDetail, ProductVendor):
-    SalesOrderDetail = SalesOrderDetail
-    SalesOrderHeader = SalesOrderHeader
-    ProductVendor = ProductVendor
+# def ComposeSoldProductProductTable(SalesOrderHeader, SalesOrderDetail, ProductVendor):
+#     SalesOrderDetail = SalesOrderDetail
+#     SalesOrderHeader = SalesOrderHeader
+#     ProductVendor = ProductVendor
 
-    return SalesOrderHeader
+#     return SalesOrderHeader
     
 
 

@@ -45,7 +45,7 @@ def ETL():
             'salary'            : rowDict['salary'],
         }
 
-        base.InsertIntoTable('F_Employee', newDict)
+        base.AddIfNotAlreadyInDBForOtherTables('F_Employee', newDict, ['emp_id'])
 
 
 

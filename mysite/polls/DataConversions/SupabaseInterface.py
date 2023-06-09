@@ -48,13 +48,32 @@ class SupabaseInterface:
             return None
         
 
-    def AddIfNotAlreadyInDB(self, table, entry):
+    def AddIfNotAlreadyInDBForFactTable(self, table, entry):
         
         exists = self.GetFirstEntryWhere(table, {
             'order_id':entry['order_id'], 
             'orderline_id': entry['orderline_id'], 
             'quantity':entry['quantity']
             })
+        # print(f'{exists = }')
+        if exists:
+            print('Is Alredy in db')
+            return
+        try:
+            self.client.table(table).insert(entry).execute()
+            print('Inserted')
+        except:
+            pass
+
+    def AddIfNotAlreadyInDBForOtherTables(self, table, entry, IdsToCheck):
+        checDict = {}
+        for i in IdsToCheck:
+            checDict[i] = entry[i]
+        
+        if not checDict:
+            raise Exception('checkDict is emptyyyyy!')
+
+        exists = self.GetFirstEntryWhere(table, checDict)
         # print(f'{exists = }')
         if exists:
             print('Is Alredy in db')
@@ -88,3 +107,4 @@ if __name__ == '__main__':
     print(res)
     print(type(res))
     # print(res)
+    

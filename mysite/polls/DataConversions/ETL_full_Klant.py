@@ -28,7 +28,7 @@ def ETL():
             'count'         : rowDict['count']
         }
 
-        base.InsertIntoTable('F_Klant', newDict)
+        base.AddIfNotAlreadyInDBForOtherTables('F_Klant', newDict, ['age', 'gender'])
 
 
 
