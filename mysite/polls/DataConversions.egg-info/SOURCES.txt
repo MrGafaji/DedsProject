@@ -15,8 +15,10 @@ DataConversions/ETL_full_Medewerker.py
 DataConversions/ETL_full_Order_Feittabel.py
 DataConversions/ETL_full_Product.py
 DataConversions/ETL_full_State.py
+DataConversions/FrequentItem.py
 DataConversions/RandomForest.py
 DataConversions/ReadAccdb.py
+DataConversions/Regression.py
 DataConversions/SupabaseInterface.py
 DataConversions/__init__.py
 DataConversions/updateScript.py
