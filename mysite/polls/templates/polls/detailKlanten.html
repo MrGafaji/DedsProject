@@ -38,7 +38,7 @@
                 .then(data => {
                     var ageGroups = data.age_groups;
                     var select = document.getElementById("ageGroup1");
-                    select.innerHTML = "";
+                    select.innerHTML = ""; // Clear previous options
                     for (var i = 0; i < ageGroups.length; i++) {
                         var opt = ageGroups[i];
                         var el = document.createElement("option");

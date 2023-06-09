@@ -26,9 +26,6 @@ class DBConn:
     vendorSUP = supabase.table('Vendor').select('*').execute().json()
     F_KlantSUP = supabase.table('F_Klant').select('*').execute().json()
     F_StateSUP = supabase.table('F_State').select('*').execute().json()
-    Product1SUP = supabase.table('Product1').select('*').execute().json()
-    WindOrderDetailsSUP = supabase.table('WindOrderDetails').select('*').execute().json()
-    WindCategorySUP = supabase.table('WindCategorie').select('*').execute().json()
     
     def toDf(tabel):
         
