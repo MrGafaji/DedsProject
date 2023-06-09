@@ -1,10 +1,10 @@
-import ETL_full_Dates 
-import ETL_full_Klant 
-import ETL_full_Leverancier 
-import ETL_full_Product 
-import ETL_full_State 
-import ETL_full_Medewerker
-import ETL_full_Order_Feittabel
+import DataConversions.ETL_full_Dates as ETL_full_Dates 
+import DataConversions.ETL_full_Klant as ETL_full_Klant 
+import DataConversions.ETL_full_Leverancier as ETL_full_Leverancier 
+import DataConversions.ETL_full_Product as ETL_full_Product 
+import DataConversions.ETL_full_State as ETL_full_State 
+import DataConversions.ETL_full_Medewerker as ETL_full_Medewerker
+import DataConversions.ETL_full_Order_Feittabel as ETL_full_Order_Feittabel
 
 import json
 from django.http import HttpResponse
