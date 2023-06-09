@@ -23,11 +23,68 @@
             </div>
         </div>
     </div>
+
+    <div>
+        <div id="results">
+            <h2>Regression Results</h2>
+            <p id="mse">Mean Squared Error: </p>
+            <p id="r2">R-squared Score: </p>
+            <div id="plot"></div>
+        </div>
+    </div>
+</body>
+
+</html>
     <script>
         updateCharts();
         setInterval(updateCharts, 300000);
 
         function updateCharts() {
+            fetch('/perform_regression')
+            .then(response => response.json())
+            .then(data => {
+                var mse = data.mse;
+                var r2 = data.r2;
+
+                var mseElement = document.getElementById("mse");
+                var r2Element = document.getElementById("r2");
+                // var graphElement = document.getElementById("plot");
+
+                mseElement.innerHTML += mse;
+                r2Element.innerHTML += r2;
+
+                var graphData = [data.graphData, data.regressionLine];
+                var layout = {
+                    title: {
+                        text: 'Regression Analysis',
+                        font: {
+                            color: '#ffffff'
+                        }
+                    },
+                    plot_bgcolor: '#212121',
+                    paper_bgcolor: '#212121',
+                    xaxis: {
+                        title: 'Salary',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    },
+                    yaxis: {
+                        title: 'Total Sales Amount',
+                        color: '#ffffff',
+                        tickfont: {
+                            color: '#ffffff'
+                        }
+                    }
+                };
+                var config = { responsive: true };
+
+                Plotly.newPlot('plot', graphData, layout, config);
+            })
+            .catch(error => {
+                console.error(error);
+            });
             fetch('/getDepartments')
                 .then(response => response.json())
                 .then(data => {
