@@ -63,9 +63,7 @@ def vote(request, question_id):
         else:
             selected_choice.votes += 1
             selected_choice.save()
-            # Always return an HttpResponseRedirect after successfully dealing
-            # with POST data. This prevents data from being posted twice if a
-            # user hits the Back button.
+            
             return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
 class dashboards():
@@ -74,12 +72,11 @@ class dashboards():
         sales_order_item = pd.read_csv('sales_order_item.csv')
         product = pd.read_csv('product.csv')
         
-        merged_data = pd.merge(sales_order_item, product, left_on='prod_id', right_on='id') # sales_order_item en product worden samengevoegd op basis van de kolommen prod_id en id
-        merged_data = pd.merge(merged_data, sales_order[['id', 'region']], left_on='id_x', right_on='id') # merged_data en sales_order worden samengevoegd op basis van de kolommen id_x en id waarvan id_x in de originele tabel ook id is
+        merged_data = pd.merge(sales_order_item, product, left_on='prod_id', right_on='id')
+        merged_data = pd.merge(merged_data, sales_order[['id', 'region']], left_on='id_x', right_on='id')
+        sales_per_region = merged_data.groupby('region')['id'].count().reset_index()
+        sales_per_region.rename(columns={'id': 'total_product_sales'}, inplace=True)
         
-        sales_per_region = merged_data.groupby('region')['id'].count().reset_index() # merged_data wordt gegroepeerd op basis van de kolom region en vervolgens wordt de kolom id geteld en gereset
-        sales_per_region.rename(columns={'id': 'total_product_sales'}, inplace=True) # de kolom id wordt hernoemd naar total_product_sales
-        
-        amount_per_region = merged_data.groupby('region')['unit_price'].sum().reset_index() # merged_data wordt gegroepeerd op basis van de kolom region en vervolgens wordt de kolom unit_price opgeteld en gereset
-        amount_per_region.rename(columns={'unit_price': 'total_sales_amount'}, inplace=True) # de kolom unit_price wordt hernoemd naar total_sales_amount
+        amount_per_region = merged_data.groupby('region')['unit_price'].sum().reset_index()
+        amount_per_region.rename(columns={'unit_price': 'total_sales_amount'}, inplace=True)
         
